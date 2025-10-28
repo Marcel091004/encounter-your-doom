@@ -414,6 +414,39 @@ paths:
           description: Not Found - e.g., no encounters found in the private userspace.
         500:
           description: Internal Server Error
+  /encounter/{userid}/{id}:
+    get:
+      summary: Gets encounter for a specific private userspace.
+      operationId: getEncounterForUser
+      tags:
+        - Encounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully got encounter for the private userspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Encounter'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found for given Id.
+        500:
+          description: Internal Server Error
+
   /encounter/{userid}/{id}/edit:
     put:
       summary: Update encounter for a specific private userspace.
@@ -588,7 +621,9 @@ paths:
           in: query
           required: false
           schema:
-            type: string
+            type: array
+            items:
+                $ref: '#/components/schemas/StatusEffects'
       responses:
         200:
           description: Successfully updated creature in the active encounter for the private userspace.
