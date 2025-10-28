@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: Encounter Your Doom API
+  description: API for the Encounter Your Doom application.
+  version: 0.0.1
+servers:
+  - url: 'https'
+paths:
+  /creature:
+    get:
+      summary: Returns a creature.
+      operationId: getCreature
+      tags:
+        - Creature
+      parameters:
+        - name: 'region'
+          in: query
+          required: false
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 10
+
+      responses:
+        '200':
+          description: Successful response with creature ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hello, I am a scary creature!"
+        400:
+          description: Bad Request - e.g., due to /creature?region
