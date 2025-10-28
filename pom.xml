@@ -78,26 +78,28 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <!-- RELEASE_VERSION -->
-                <version>7.16.0</version>
-                <!-- /RELEASE_VERSION -->
+                <version>7.2.0</version>
                 <executions>
+                    <!-- 1. Spring Boot Interfaces -->
                     <execution>
+                        <id>generate-spring</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/API/encounter-your-doom.yaml</inputSpec>
+                            <inputSpec>./src/main/resources/API/encounter-your-doom.yaml</inputSpec>
                             <generatorName>spring</generatorName>
+                            <output>./target/generated-sources/openapi-spring</output>
                             <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useSpringBoot3>true</useSpringBoot3>
-
                             </configOptions>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

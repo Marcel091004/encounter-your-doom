@@ -17,20 +17,853 @@ paths:
           in: query
           required: false
           schema:
+            type: enum
+            $ref: '#/components/schemas/Region'
+        - name: 'rarity'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Rarity'
+        - name: 'CR'
+          in: query
+          required: false
+          schema:
             type: string
-            minLength: 2
-            maxLength: 10
+            description: 'Challenge Rating indicating the difficulty of the creature (1/8 up to 30).'
 
       responses:
-        '200':
-          description: Successful response with creature ID.
+        200:
+          description: Successful response with a creature.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Creature'
+        400:
+          description: Bad Request - e.g., due to /creature?region or /creature?rarity being too long.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no creature found for the specified region or rarity.
+        500:
+          description: Internal Server Error
+
+  /creature/{id}:
+    get:
+      summary: Returns a creature based on its ID.
+      operationId: getCreatureById
+      tags:
+        - Creature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful response with a creature.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creature'
+        400:
+          description: Bad Request - e.g., due to invalid UUID format.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no creature found with the specified ID.
+        500:
+          description: Internal Server Error
+
+  /creature/{id}/edit:
+    put:
+      summary: Updates a creature based on its ID.
+      operationId: updateCreatureById
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Creature'
+      tags:
+        - Creature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully updated creature.
+        400:
+          description: Bad Request - e.g., due to invalid UUID format.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no creature found with the specified ID.
+        500:
+          description: Internal Server Error
+
+  /creature/new:
+    post:
+      summary: Updates a creature based on its ID.
+      operationId: createNewCreature
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Creature'
+      tags:
+        - Creature
+      responses:
+        200:
+          description: Successfully created creature.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  id:
                     type: string
-                    example: "Hello, I am a scary creature!"
+                    format: uuid
         400:
-          description: Bad Request - e.g., due to /creature?region
+          description: Bad Request - e.g., due to already existing creature.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no creature found with the specified ID.
+        500:
+          description: Internal Server Error
+
+  /creature/random:
+    get:
+      summary: Gets a random creature.
+      operationId: getRandomCreature
+      tags:
+        - Creature
+      parameters:
+        - name: 'region'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Region'
+        - name: 'rarity'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Rarity'
+        - name: 'CR'
+          in: query
+          required: false
+          schema:
+            type: string
+            description: 'Challenge Rating indicating the difficulty of the creature (1/8 up to 30).'
+
+
+      responses:
+        200:
+          description: Successfully got a random creature.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creature'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no creature found.
+        500:
+          description: Internal Server Error
+
+  /encounter:
+    get:
+      summary: Gets all public encounters.
+      operationId: getAllPublicEncounters
+      tags:
+        - Encounter
+      parameters:
+        - name: 'region'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Region'
+        - name: 'rarity'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Rarity'
+        - name: 'difficultyLevel'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/DifficultyLevel'
+        - name: 'partyLevel'
+          in: query
+          required: false
+          schema:
+            type: int
+            description: 'Indicates the average level of the player party.'
+      responses:
+        200:
+          description: Successfully got all Encounters.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Encounter'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found.
+        500:
+          description: Internal Server Error
+
+  /encounter/{id}:
+    get:
+      summary: Gets a public encounter by its Id.
+      operationId: getPublicEncounterById
+      tags:
+        - Encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully got a Encounter by Id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Encounter'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found with the specified ID.
+        500:
+          description: Internal Server Error
+
+  /encounter/{id}/edit:
+    put:
+      summary: Update a public encounter by its Id.
+      operationId: updatePublicEncounterById
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      tags:
+        - Encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully updated a Encounter by Id.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found with the specified ID.
+        500:
+          description: Internal Server Error
+
+  /encounter/{id}/{userid}/move:
+    put:
+      summary: Move a encounter to the privat userspace.
+      operationId: moveEncounterToUserSpace
+      tags:
+        - Encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully moved a encounter to the privat userspace.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found with the specified ID.
+        500:
+          description: Internal Server Error
+
+  /encounter/new:
+    post:
+      summary: Creates a new encounter.
+      operationId: createNewEncounter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      tags:
+        - Encounter
+      responses:
+        200:
+          description: Successfully created encounter.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+        400:
+          description: Bad Request - e.g., due to already existing encounter.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        500:
+          description: Internal Server Error
+
+  /encounter/random:
+    get:
+      summary: Gets a random encounter.
+      operationId: getRandomEncounter
+      tags:
+        - Encounter
+      parameters:
+        - name: 'region'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Region'
+        - name: 'rarity'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Rarity'
+        - name: 'difficultyLevel'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/DifficultyLevel'
+        - name: 'partyLevel'
+          in: query
+          required: false
+          schema:
+            type: int
+            description: 'Indicates the average level of the player party.'
+      responses:
+        200:
+          description: Successfully got a random encounter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Encounter'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found.
+        500:
+          description: Internal Server Error
+
+  /encounter/{userid}:
+    get:
+      summary: Gets all encounters for a specific private userspace.
+      operationId: getAllEncountersForUser
+      tags:
+        - Encounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully got all encounters for the private userspace.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Encounter'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounters found in the private userspace.
+        500:
+          description: Internal Server Error
+  /encounter/{userid}/{id}/edit:
+    put:
+      summary: Update encounter for a specific private userspace.
+      operationId: updateEncounterForUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      tags:
+        - Encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully updated encounter for the private userspace.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found for given Id.
+        500:
+          description: Internal Server Error
+  /encounter/{userid}/{id}/start:
+    post:
+      summary: Start an encounter for a specific private userspace.
+      operationId: startEncounterForUser
+      tags:
+        - Encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully started encounter for the private userspace.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no encounter found for given Id.
+        500:
+          description: Internal Server Error
+  /encounter/{userid}/new:
+    post:
+      summary: Creates a new encounter for a specific private userspace.
+      operationId: createNewEncounterForUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      tags:
+        - Encounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully created encounter for the private userspace.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+        400:
+          description: Bad Request - e.g., due to already existing encounter.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        500:
+          description: Internal Server Error
+  /user/generation:
+    post:
+      summary: Generates a UUID to identify a user.
+      operationId: generateUserId
+      tags:
+        - User
+      responses:
+        200:
+          description: Successfully generated a user ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    format: uuid
+        500:
+          description: Internal Server Error
+  /activeEncounter/{userid}:
+    get:
+      summary: Gets the active encounter for a specific private userspace.
+      operationId: getActiveEncounterForUser
+      tags:
+        - ActiveEncounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully got the active encounter for the private userspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveEncounter'
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no active encounter found in the private userspace.
+        500:
+          description: Internal Server Error
+  /activeEncounter/{userid}/{creatureid}:
+    put:
+      summary: Updates a creature in the active encounter for a the active encounter.
+      operationId: updateCreatureInActiveEncounterForUser
+      tags:
+        - ActiveEncounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: creatureid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: heal
+          in: query
+          required: false
+          schema:
+            type: int
+        - name: damage
+          in: query
+          required: false
+          schema:
+            type: int
+        - name: statusEffect
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully updated creature in the active encounter for the private userspace.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no active encounter or creature found for given Ids.
+        500:
+          description: Internal Server Error
+  /activeEncounter/{userid}/close:
+    delete:
+      summary: Closes the active encounter for a specific private userspace.
+      operationId: closeActiveEncounterForUser
+      tags:
+        - ActiveEncounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successfully closed the active encounter for the private userspace.
+        403:
+          description: Forbidden - e.g., due to invalid API key.
+        404:
+          description: Not Found - e.g., no active encounter found for given Id.
+        500:
+          description: Internal Server Error
+components:
+  schemas:
+    Creature:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        initiative:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: "Goblin"
+          minLength: 2
+          maxLength: 20
+        HP:
+          type: integer
+          example: 30
+          minimum: 1
+          maximum: 1000
+        AC:
+          type: integer
+          example: 15
+          minimum: 0
+          maximum: 30
+        CreatureDescription:
+          type: string
+          example: "A small, green humanoid creature known for its mischievous nature."
+          minLength: 5
+          maxLength: 1000
+        statBlock:
+          $ref: '#/components/schemas/StatBlock'
+        statusEffects:
+          type: array
+          items:
+            example: [ "Poisoned", "Stunned" ]
+            $ref: '#/components/schemas/StatusEffects'
+        resistances:
+          type: array
+          items:
+            example: [ "Fire", "Cold" ]
+            $ref: '#/components/schemas/damageTypes'
+        immunities:
+          type: array
+          items:
+            example: [ "Poison", "Charm" ]
+            $ref: '#/components/schemas/damageTypes'
+        weaknesses:
+          type: array
+          items:
+            example: [ "Radiant", "Psychic" ]
+            $ref: '#/components/schemas/damageTypes'
+        region:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+            example: "Forest"
+        rarity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rarity'
+            example: "Common"
+        CR:
+          type: string
+          example: "1/4"
+          description: "Challenge Rating indicating the difficulty of the creature."
+        Speed:
+          type: integer
+          example: 30
+          description: "The movement speed of the creature in feet."
+        traits:
+          type: array
+          items:
+            type: string
+          example: [ "Darkvision", "Pack Tactics" ]
+          description: "Special traits or abilities of the creature."
+
+    Attack:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Slash"
+        attackBonus:
+          type: integer
+          example: 5
+        damage:
+          type: string
+          example: "1d6 + 3 slashing"
+        description:
+          type: string
+          example: "A quick slash with a sharp blade."
+        damageType:
+          type: array
+          items:
+            example: "Slashing"
+            $ref: '#/components/schemas/damageTypes'
+
+    StatBlock:
+      type: object
+      properties:
+        Str:
+          type: integer
+          minimum: -5
+          maximum: 5
+        Dex:
+          type: integer
+          minimum: -5
+          maximum: 5
+        Con:
+          type: integer
+          minimum: -5
+          maximum: 5
+        Int:
+          type: integer
+          minimum: -5
+          maximum: 5
+        Wis:
+          type: integer
+          minimum: -5
+          maximum: 5
+        Cha:
+          type: integer
+          minimum: -5
+          maximum: 5
+
+    Encounter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Ambush in the Forest"
+          minLength: 2
+          maxLength: 100
+        Id:
+          type: string
+          format: uuid
+          example: "223e4567-e89b-12d3-a456-426614174000"
+        creatures:
+          type: array
+          items:
+            Id:
+              type: string
+              format: uuid
+          description: "List of creatures involved in the encounter."
+        environment:
+          type: array
+          example: "Dense forest with limited visibility."
+          schema:
+            $ref: '#/components/schemas/Region'
+        partyLevel:
+          type: integer
+          example: 3
+          description: "Indicates the average level of the player party."
+        difficultyLevel:
+          type: array
+          items:
+            $ref: '#/components/schemas/DifficultyLevel'
+          example: "Medium"
+          description: "Indicates the overall difficulty level of the encounter."
+        description:
+          type: string
+          example: "A group of goblins ambushes the party in a dense forest."
+          minLength: 5
+          maxLength: 1000
+        reward:
+          type: string
+          example: "100 gold pieces and a magical sword."
+          description: "Rewards for successfully completing the encounter."
+
+    ActiveEncounter:
+      type: object
+      properties:
+        encounter:
+          $ref: '#/components/schemas/Encounter'
+        creatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Creature'
+
+    DifficultyLevel:
+      type: string
+      enum:
+        - Trivial
+        - Easy
+        - Medium
+        - Hard
+        - Deadly
+    damageTypes:
+      type: string
+      enum:
+        - Slashing
+        - Piercing
+        - Bludgeoning
+        - Fire
+        - Cold
+        - Lightning
+        - Acid
+        - Poison
+        - Psychic
+        - Necrotic
+        - Radiant
+        - Thunder
+        - Force
+    StatusEffects:
+      type: string
+      enum:
+        - Blinded
+        - Charmed
+        - Deafened
+        - Frightened
+        - Grappled
+        - Incapacitated
+        - Invisible
+        - Paralyzed
+        - Petrified
+        - Poisoned
+        - Prone
+        - Restrained
+        - Stunned
+        - Unconscious
+    Region:
+      type: string
+      enum:
+        - Forest
+        - Desert
+        - Mountain
+        - Swamp
+        - Urban
+        - Coastal
+        - Arctic
+        - Underground
+        - Plains
+        - Jungle
+        - Hills
+        - Volcanic
+    Rarity:
+      type: string
+      enum:
+        - Common
+        - Uncommon
+        - Rare
+        - Very Rare
+        - Legendary
+        - Mythic
