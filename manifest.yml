@@ -13,4 +13,5 @@ applications:
       - route: encounter-your-doom.apps-internal.lab.datev.de
     services:
       - splunk
+      - mongodb
 
