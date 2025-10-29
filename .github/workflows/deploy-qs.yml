@@ -120,6 +120,9 @@ jobs:
           docu-change-owner: ${{ vars.DOCU_CHANGE_OWNER }}
           docu-change-environment: QS
           target-environment: qs
+          cloud-foundry-services: |
+            splunk-hec-logger standard splunk
+            mongodb70 mongodb-single-5g-tls mongodb
 
       # ↑↑↑ End of customizable section ↑↑↑
       # ============================================================================
