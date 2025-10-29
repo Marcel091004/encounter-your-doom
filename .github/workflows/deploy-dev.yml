@@ -112,6 +112,9 @@ jobs:
           app-route-domain: ${{ vars.CF_DOMAIN }}
           cloud-foundry-route-name: ${{ vars.CF_ROUTE_NAME }}
           cloud-foundry-app-name: ${{ vars.CF_APP_NAME }}
+          cloud-foundry-services: |
+            splunk-hec-logger standard splunk
+            mongodb70 mongodb-single-5g-tls mongodb
 
       # ↑↑↑ End of customizable section ↑↑↑
       # ============================================================================
