@@ -1,5 +1,7 @@
 package org.cool.encounteryourdoom.Controller;
 
+import org.cool.encounteryourdoom.Service.EncounterService;
+import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.openapitools.api.EncounterApi;
 import org.openapitools.model.*;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,12 @@ import java.util.UUID;
 
 @RestController
 public class EncounterController implements EncounterApi {
+
+    private final EncounterService encounterService;
+
+    public EncounterController(EncounterService encounterService) {
+        this.encounterService = encounterService;
+    }
 
     @Override
     public ResponseEntity<List<Encounter>> getAllPublicEncounters(Region region, Rarity rarity, DifficultyLevel difficultyLevel, Integer partyLevel) {
@@ -40,6 +48,13 @@ public class EncounterController implements EncounterApi {
     @Override
     public ResponseEntity<CreateNewCreature200Response> createNewEncounter(Encounter encounter) {
         //TODO this is not yet implemented
+
+        EncounterEntity encounterwtf = new EncounterEntity();
+        encounterwtf.setId(UUID.randomUUID());
+        encounterwtf.setName(encounter.getName());
+        encounterwtf.setDescription(encounter.getDescription());
+
+        this.encounterService.save(encounterwtf);
         CreateNewCreature200Response response = new CreateNewCreature200Response();
         response.setId(UUID.randomUUID());
         return ResponseEntity.ok(response);

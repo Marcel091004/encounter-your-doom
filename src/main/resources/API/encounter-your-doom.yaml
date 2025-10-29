@@ -798,23 +798,17 @@ components:
         creatures:
           type: array
           items:
-            Id:
-              type: string
-              format: uuid
+            type: string
+            format: uuid
           description: "List of creatures involved in the encounter."
         environment:
-          type: array
-          example: "Dense forest with limited visibility."
-          schema:
-            $ref: '#/components/schemas/Region'
+          $ref: '#/components/schemas/Region'
         partyLevel:
           type: integer
           example: 3
           description: "Indicates the average level of the player party."
         difficultyLevel:
-          type: array
-          items:
-            $ref: '#/components/schemas/DifficultyLevel'
+          $ref: '#/components/schemas/DifficultyLevel'
           example: "Medium"
           description: "Indicates the overall difficulty level of the encounter."
         description:
