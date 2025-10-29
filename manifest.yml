@@ -1,0 +1,16 @@
+applications:
+  - name: encounter-your-doom
+    instances: 1
+    memory: 512M
+    disk_quota: 512M
+    buildpacks:
+      - java_buildpack_offline
+    env:
+      JVM: openjdk
+      JBP_CONFIG_OPEN_JDK_JRE: "{ jre: { version: 21.+ }, memory_calculator: { stack_threads: 25 } }"
+    path: ./target/encounter-your-doom-0.0.1-SNAPSHOT.jar
+    routes:
+      - route: encounter-your-doom.apps-internal.lab.datev.de
+    services:
+      - splunk
+

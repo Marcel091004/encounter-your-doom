@@ -1,0 +1,37 @@
+# =============================================================================
+# 📦 This workflow is part of DATEV's modular GitHub Flow:
+#
+# Version: v1.9.0
+# File on Github: https://github.com/datevscm/progressive-workflows/blob/v1.9.0/pre-designed-workflows/github-flow/maven-app/gh-release.yml
+# Releases: https://github.com/datevscm/progressive-workflows/releases
+#
+# 📚 Helpful documentation
+# Big Picture: https://confluence.datev.de/x/a8WAJ
+# =============================================================================
+
+name: GitHub Release
+run-name: GitHub Release | ${{ github.event.client_payload.publish.git_tag || inputs.tag_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag that should be released"
+        required: true
+  repository_dispatch:
+    types: ["publish-success"]
+
+env:
+  TAG_NAME: ${{ github.event.client_payload.publish.git_tag || inputs.tag_name }}
+
+jobs:
+  gh-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        run: |
+          gh release create "${{ env.TAG_NAME }}" \
+          --generate-notes \
+          --repo "${{ github.repository }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

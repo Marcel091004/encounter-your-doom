@@ -1,0 +1,139 @@
+# =============================================================================
+# 📦 This workflow is part of DATEV's modular GitHub Flow:
+#
+# Version: v1.9.0
+# File on Github: https://github.com/datevscm/progressive-workflows/blob/v1.9.0/pre-designed-workflows/github-flow/maven-app/deploy-qs.yml
+# Releases: https://github.com/datevscm/progressive-workflows/releases
+#
+# 📚 Helpful documentation
+# Big Picture: https://confluence.datev.de/x/a8WAJ
+# Artifactory Doc: https://github.com/datevscm/progressive-workflows/blob/v1.9.0/pre-designed-workflows/github-flow/docs/artifactory.md
+# GitHub Environments Doc: https://github.com/datevscm/progressive-workflows/blob/v1.9.0/pre-designed-workflows/github-flow/docs/gh_environments.md
+# Vault Doc: https://github.com/datevscm/progressive-workflows/blob/v1.9.0/pre-designed-workflows/github-flow/docs/vault.md
+# =============================================================================
+
+name: Deploy QS
+run-name: Deploy QS | ${{ github.event.client_payload.publish.version || github.event.inputs.version }}
+
+on:
+  repository_dispatch:
+    types: [publish-success]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version"
+        required: true
+        type: string
+
+env:
+  MANIFEST_PATH: "manifest.yml" # ProFlows-Setup-TODO [MANIFEST_PATH] replace it with the path to the manifest file, for example: service1/manifest.yml
+  VARS_FILE_PATH: "" # ProFlows-Setup-TODO [VARS_FILE_PATH] set the path to the vars file if you need, for example: service1/vars-dev.yml
+  VERSION: ${{ github.event.client_payload.publish.version || github.event.inputs.version }}
+
+  # =================== If Vault is NOT used ==========================
+  ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
+  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+  CF_USERNAME: ${{ secrets.CF_USERNAME }}
+  CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+  # ==================== END If Vault is NOT used ======================
+
+jobs:
+  deploy:
+    runs-on: cnrz # ProFlows-Setup-TODO [RUNS_ON] set cnrz (deploy in to CnRZ PaaS) or classic-rz (deploy in to Classic-RZ PaaS)
+    environment: qs # ProFlows-Setup-TODO [ENVIRONMENT] set the correct environment name, for example: dev-deployableServiceX
+
+    # Changed to permissions: 'write-all' for compatibility, flexibility, and ease of customization.
+    # Please update to stricter permissions if your workflow has specific security requirements.
+    permissions: "write-all"
+    steps:
+      # ============= if Vault instead of GitHub Secrets is used ===================
+
+      #      - name: Load Secrets from Vault
+      #        id: secrets
+      #        # ⚠️  datevscm/vault-action ATTENTION: is a workaround for the Classic RZ Runner. See https://github.com/datevscm/progressive-workflows/blob/main/pre-designed-workflows/github-flow/docs/vault.md
+      #        uses: datevscm/vault-action@v1
+      #        with:
+      #          url: https://vault-kms.prod.datev.de/
+      #          method: jwt
+      #          caCertificate: ${{ vars.VAULT_CA_PROD_CERT }} # Provided globally by the admins
+      #          role: ${{ vars.VAULT_ROLE || github.event.repository.name }}
+      #          jwtGithubAudience: datev-vault
+      #          path: github
+      #          secrets: |
+      #            artifactory/token/artifactory-ns-${{ vars.ARTIFACTORY_NAMESPACE }} access_token | ARTIFACTORY_TOKEN ;
+      #            artifactory/token/artifactory-ns-${{ vars.ARTIFACTORY_NAMESPACE }} username | ARTIFACTORY_USERNAME ;
+      #            kv/data/${{ vars.VAULT_CF_USERNAME_SELECTOR }} | CF_USERNAME ;
+      #            kv/data/${{ vars.VAULT_CF_PASSWORD_SELECTOR }} | CF_PASSWORD ;
+
+      # ============= END if Vault instead of GitHub Secrets is used ================
+
+      - name: Checkout project code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.VERSION }}
+
+      - name: Install Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: ${{ vars.MAVEN_VERSION || '3.9.11' }}
+
+      - name: Setup Maven and Artifactory
+        uses: datevscm/cicdnext-step-setup-maven@v1
+        with:
+          artifactory-username: ${{ env.ARTIFACTORY_USERNAME }}
+          artifactory-token: ${{ env.ARTIFACTORY_TOKEN }}
+          java-version: ${{ vars.JAVA_VERSION }}
+
+      - name: Get artifact info
+        id: artifact-info
+        uses: datevscm/progressive-workflows/actions/get-artifact-info@v1
+        with:
+          artifact-type: 'mvn'
+          working-directory: ${{ env.MODULE_NAME }}
+
+      # ========================== CUSTOMIZABLE SECTION ==========================
+      # ↓↓↓ Customize steps here if needed ↓↓↓
+      # Doc: https://confluence.datev.de/display/DC/Blue+Green+Deployment+on+Cloud+Foundry+via+Manifest
+
+      - name: Deploy Blue Green on Cloud Foundry
+        uses: datevscm/cicdnext-step-execute-blue-green-deployment-cloudfoundry@v2
+        with:
+          artifact-path: ${{ steps.artifact-info.outputs.mvn-artifact-path }}
+          manifest: ${{ env.MANIFEST_PATH }}
+          vars-file: ${{ env.VARS_FILE_PATH }}
+          icinga-service: ${{ env.ICINGA_SERVICE }}
+          artifactory-username: ${{ env.ARTIFACTORY_USERNAME }}
+          artifactory-token: ${{ env.ARTIFACTORY_TOKEN }}
+          cloud-foundry-username: ${{ env.CF_USERNAME }}
+          cloud-foundry-password: ${{ env.CF_PASSWORD }}
+          cloud-foundry-api: ${{ vars.CF_ENDPOINT  }}
+          deployment-proxy-url: ${{ vars.CF_ENDPOINT }}
+          enable-deployment-proxy: false #false das keine Service-ID benötigt wird
+          cloud-foundry-org: ${{ vars.CF_ORG }}
+          cloud-foundry-space: ${{ vars.CF_SPACE }}
+          app-route-domain: ${{ vars.CF_DOMAIN }}
+          cloud-foundry-route-name: ${{ vars.CF_ROUTE_NAME }}
+          cloud-foundry-app-name: ${{ vars.CF_APP_NAME }}
+          service-id: ${{ vars.SERVICE_ID }}
+          itsm-username: ${{ secrets.ITSM_USERNAME }} # Provided globally by the admins
+          itsm-password: ${{ secrets.ITSM_PASSWORD }} # Provided globally by the admins
+          docu-change-owner: ${{ vars.DOCU_CHANGE_OWNER }}
+          docu-change-environment: QS
+          target-environment: qs
+
+      # ↑↑↑ End of customizable section ↑↑↑
+      # ============================================================================
+
+      - name: Emit event
+        uses: datevscm/progressive-workflows/actions/emit-event@v1
+        with:
+          event_name: deploy-qs-success
+          json_payload: |
+            {
+              "deploy_qs": 
+              {
+                "version":"${{ env.VERSION }}",
+                "git_tag":"${{ env.VERSION }}"
+              }
+            }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
