@@ -46,7 +46,7 @@ public class EncounterController implements EncounterApi {
     }
 
     @Override
-    public ResponseEntity<CreateNewCreature200Response> createNewEncounter(Encounter encounter) {
+    public ResponseEntity<UUID> createNewEncounter(Encounter encounter) {
         //TODO this is not yet implemented
 
         EncounterEntity encounterwtf = new EncounterEntity();
@@ -55,16 +55,14 @@ public class EncounterController implements EncounterApi {
         encounterwtf.setDescription(encounter.getDescription());
 
         this.encounterService.save(encounterwtf);
-        CreateNewCreature200Response response = new CreateNewCreature200Response();
-        response.setId(UUID.randomUUID());
+        UUID response = UUID.randomUUID();
         return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<CreateNewCreature200Response> createNewEncounterForUser(UUID id, Encounter encounter) {
+    public ResponseEntity<UUID> createNewEncounterForUser(UUID id, Encounter encounter) {
         //TODO this is not yet implemented
-        CreateNewCreature200Response response = new CreateNewCreature200Response();
-        response.setId(UUID.randomUUID());
+        UUID response = UUID.randomUUID();
         return ResponseEntity.ok(response);
     }
 

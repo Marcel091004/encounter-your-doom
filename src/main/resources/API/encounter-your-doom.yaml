@@ -126,11 +126,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
+                $ref: '#/components/schemas/UUID'
         400:
           description: Bad Request - e.g., due to already existing creature.
         403:
@@ -329,11 +325,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
+                $ref: '#/components/schemas/UUID'
         400:
           description: Bad Request - e.g., due to already existing encounter.
         403:
@@ -532,11 +524,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
+               $ref: '#/components/schemas/UUID'
         400:
           description: Bad Request - e.g., due to already existing encounter.
         403:
@@ -555,11 +543,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  userId:
-                    type: string
-                    format: uuid
+                $ref: '#/components/schemas/UUID'
         500:
           description: Internal Server Error
   /activeEncounter/{userid}:
@@ -657,6 +641,12 @@ paths:
           description: Internal Server Error
 components:
   schemas:
+
+    UUID:
+      type: string
+      format: uuid
+      example: "123e4567-e89b-12d3-a456-426614174000"
+
     Creature:
       type: object
       properties:

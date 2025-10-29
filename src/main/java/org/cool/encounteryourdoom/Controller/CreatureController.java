@@ -1,7 +1,6 @@
 package org.cool.encounteryourdoom.Controller;
 
 import org.openapitools.api.CreatureApi;
-import org.openapitools.model.CreateNewCreature200Response;
 import org.openapitools.model.Creature;
 import org.openapitools.model.Rarity;
 import org.openapitools.model.Region;
@@ -36,10 +35,9 @@ public class CreatureController implements CreatureApi {
     }
 
     @Override
-    public ResponseEntity<CreateNewCreature200Response> createNewCreature(Creature creature) {
+    public ResponseEntity<UUID> createNewCreature(Creature creature) {
         //TODO this is not yet implemented
-        CreateNewCreature200Response response = new CreateNewCreature200Response();
-        response.setId(UUID.randomUUID());
+        UUID response = UUID.randomUUID();
         return ResponseEntity.ok(response);
     }
 
