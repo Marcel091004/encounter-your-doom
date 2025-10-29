@@ -40,6 +40,7 @@
     </distributionManagement>
     <properties>
         <java.version>21</java.version>
+        <sonar.organization>datevscm</sonar.organization>
     </properties>
     <dependencies>
         <dependency>
