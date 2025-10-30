@@ -1,11 +1,14 @@
 package org.cool.encounteryourdoom.model;
 
+import org.cool.encounteryourdoom.MongoDBTestContainer;
 import org.cool.encounteryourdoom.Repository.CreatureRepository;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.context.ImportTestcontainers;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataMongoTest
-@ActiveProfiles("test")
+@Testcontainers
+@ImportTestcontainers(MongoDBTestContainer.class)
 class CreatureEntityTest {
 
     @Autowired
