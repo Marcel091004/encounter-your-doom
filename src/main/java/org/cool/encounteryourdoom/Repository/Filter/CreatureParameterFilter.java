@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.openapitools.model.Rarity;
 import org.openapitools.model.Region;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public class CreatureParameterFilter {
@@ -12,6 +14,7 @@ public class CreatureParameterFilter {
     private Region region;
     private Rarity rarity;
     private String CR;
+    private UUID uuid;
 
 }
 

@@ -1,11 +1,14 @@
 package org.cool.encounteryourdoom.Service;
 
+import org.cool.encounteryourdoom.Mapper.CreatureMapper;
 import org.cool.encounteryourdoom.Repository.CreatureRepository;
 import org.cool.encounteryourdoom.Repository.Filter.CreatureParameterFilter;
 import org.cool.encounteryourdoom.model.CreatureEntity;
+import org.openapitools.model.Creature;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CreatureService {
@@ -13,20 +16,28 @@ public class CreatureService {
 	//TODO : Implement CreatureService
 
 	private final CreatureRepository creatureRepository;
+    private final CreatureMapper creatureMapper;
 
-	CreatureService(CreatureRepository creatureRepository) {
+	CreatureService(CreatureRepository creatureRepository, CreatureMapper creatureMapper) {
 		this.creatureRepository = creatureRepository;
+        this.creatureMapper = creatureMapper;
+    }
+
+
+
+	public List<Creature> getAllCreatures(CreatureParameterFilter filter) {
+		List<CreatureEntity> entities = this.creatureRepository.findCreaturesByFilters(filter);
+        return creatureMapper.toCreatureList(entities);
 	}
 
+    public Creature getCreatureByID(UUID ID) {
+        CreatureEntity entity = this.creatureRepository.findById(ID).orElse(null);
+        return creatureMapper.toCreature(entity);
 
-	//TODO: Refactoring für weniger Methoden und einfache erweiterbarkeit (eigenes Interface?)
+    }
 
-	public List<CreatureEntity> getAllCreatures(CreatureParameterFilter filter) {
-		return this.creatureRepository.findCreaturesByFilters(filter);
-	}
-
-//    public Optional<CreatureEntity> getCreatureByID(UUID ID) {
-//
-//    }
+    public void updateCreatureByID(UUID id, Creature creature) {
+        //TODO this is not yet implemented
+    }
 
 }

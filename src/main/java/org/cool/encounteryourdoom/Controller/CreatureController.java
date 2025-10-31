@@ -25,24 +25,21 @@ public class CreatureController implements CreatureApi {
 
     @Override
     public ResponseEntity<List<Creature>> getCreature(Region region, Rarity rarity, String CR) {
-        //TODO this is not yet implemented
 
         CreatureParameterFilter filter = new CreatureParameterFilter();
         filter.setRegion(region);
         filter.setRarity(rarity);
         filter.setCR(CR);
 
-        System.out.println(creatureService.getAllCreatures(filter));
-
-        List<Creature> creatures = new ArrayList<>(); // Replace with actual creature object
-        return ResponseEntity.ok(creatures);
+        return ResponseEntity.ok(creatureService.getAllCreatures(filter));
     }
 
     @Override
     public ResponseEntity<Creature> getCreatureById(UUID id) {
-        //TODO this is not yet implemented
-        Creature creature = new Creature(); // Replace with actual creature object
+
+        Creature creature = creatureService.getCreatureByID(id);
         return ResponseEntity.ok(creature);
+
     }
 
     @Override
