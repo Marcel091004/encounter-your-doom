@@ -3,7 +3,10 @@ package org.cool.encounteryourdoom.Controller;
 import org.cool.encounteryourdoom.Service.EncounterService;
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.openapitools.api.EncounterApi;
-import org.openapitools.model.*;
+import org.openapitools.model.DifficultyLevel;
+import org.openapitools.model.Encounter;
+import org.openapitools.model.Rarity;
+import org.openapitools.model.Region;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 

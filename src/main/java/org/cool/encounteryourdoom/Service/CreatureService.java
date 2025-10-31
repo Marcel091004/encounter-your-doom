@@ -1,9 +1,8 @@
 package org.cool.encounteryourdoom.Service;
 
-import org.cool.encounteryourdoom.Repository.CreatureRepository;
+import org.cool.encounteryourdoom.Repository.Filter.CreatureParameterFilter;
+import org.cool.encounteryourdoom.Repository.Implementierungen.CreatureRepositoryImpl;
 import org.cool.encounteryourdoom.model.CreatureEntity;
-import org.openapitools.model.Rarity;
-import org.openapitools.model.Region;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,44 +12,23 @@ public class CreatureService {
 
 	//TODO : Implement CreatureService
 
-	private final CreatureRepository creatureRepository;
+	private final CreatureRepositoryImpl creatureRepository;
 
-	CreatureService(CreatureRepository creatureRepository) {
+	CreatureService(CreatureRepositoryImpl creatureRepository) {
 		this.creatureRepository = creatureRepository;
 	}
 
+
 	//TODO: Refactoring für weniger Methoden und einfache erweiterbarkeit (eigenes Interface?)
-	public List<CreatureEntity> getAllCreatures() {
-		return this.creatureRepository.findAll();
+
+	public List<CreatureEntity> getAllCreatures(CreatureParameterFilter filter) {
+		return this.creatureRepository.findCreaturesByFilters(filter);
 	}
 
-	public List<CreatureEntity> getAllCreatures(Region region) {
-		return this.creatureRepository.findByRegion(region);
-	}
 
-	public List<CreatureEntity> getAllCreatures(Region region, Rarity rarity) {
-		return creatureRepository.findByRegionAndRarity(region, rarity);
-	}
 
-	public List<CreatureEntity> getAllCreatures(Region region, String cr) {
-		return creatureRepository.findByRegionAndCr(region, cr);
-	}
-
-	public List<CreatureEntity> getAllCreatures(Region region, Rarity rarity, String cr) {
-		return creatureRepository.findByRegionAndRarityAndCr(region, rarity, cr);
-	}
-
-	public List<CreatureEntity> getAllCreatures(Rarity rarity) {
-		return creatureRepository.findByRarity(rarity);
-	}
-
-	public List<CreatureEntity> getAllCreatures(Rarity rarity, String cr) {
-		return creatureRepository.findByRarityAndCr(rarity, cr);
-	}
-
-	public List<CreatureEntity> getAllCreatures(String cr) {
-		return creatureRepository.findByCr(cr);
-	}
-
+//   public Optional<CreatureEntity> findByUUId(UUID id) {
+//         return creatureRepository.findByUUId(id);
+//   }
 
 }

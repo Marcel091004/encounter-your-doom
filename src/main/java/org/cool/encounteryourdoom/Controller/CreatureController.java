@@ -1,5 +1,7 @@
 package org.cool.encounteryourdoom.Controller;
 
+import org.cool.encounteryourdoom.Repository.Filter.CreatureParameterFilter;
+import org.cool.encounteryourdoom.Service.CreatureService;
 import org.openapitools.api.CreatureApi;
 import org.openapitools.model.Creature;
 import org.openapitools.model.Rarity;
@@ -14,9 +16,24 @@ import java.util.UUID;
 @RestController
 public class CreatureController implements CreatureApi {
 
+    private final CreatureService creatureService;
+
+    CreatureController(CreatureService creatureService) {
+        this.creatureService = creatureService;
+    }
+
+
     @Override
     public ResponseEntity<List<Creature>> getCreature(Region region, Rarity rarity, String CR) {
         //TODO this is not yet implemented
+
+        CreatureParameterFilter filter = new CreatureParameterFilter();
+        filter.setRegion(region);
+        filter.setRarity(rarity);
+        filter.setCR(CR);
+
+        System.out.println(creatureService.getAllCreatures(filter));
+
         List<Creature> creatures = new ArrayList<>(); // Replace with actual creature object
         return ResponseEntity.ok(creatures);
     }
