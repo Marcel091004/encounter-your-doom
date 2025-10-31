@@ -37,7 +37,7 @@ public class CreatureService {
     }
 
     public void updateCreatureByID(UUID id, Creature creature) {
-        //TODO this is not yet implemented
+		this.creatureRepository.updateCreatureByID(id, creatureMapper.toCreatureEntity(creature));
     }
 
 }

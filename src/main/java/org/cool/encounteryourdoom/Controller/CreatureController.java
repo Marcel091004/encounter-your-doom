@@ -44,7 +44,8 @@ public class CreatureController implements CreatureApi {
 
     @Override
     public ResponseEntity<Void> updateCreatureById(UUID id, Creature creature) {
-        //TODO this is not yet implemented
+
+		creatureService.updateCreatureByID(id, creature);
         return ResponseEntity.ok().build();
     }
 
