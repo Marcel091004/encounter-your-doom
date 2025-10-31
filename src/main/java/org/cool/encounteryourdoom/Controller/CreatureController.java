@@ -6,6 +6,7 @@ import org.openapitools.api.CreatureApi;
 import org.openapitools.model.Creature;
 import org.openapitools.model.Rarity;
 import org.openapitools.model.Region;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 

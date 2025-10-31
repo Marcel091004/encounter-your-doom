@@ -5,9 +5,11 @@ import org.cool.encounteryourdoom.Repository.CreatureRepository;
 import org.cool.encounteryourdoom.Repository.Filter.CreatureParameterFilter;
 import org.cool.encounteryourdoom.model.CreatureEntity;
 import org.openapitools.model.Creature;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,7 +39,13 @@ public class CreatureService {
     }
 
     public void updateCreatureByID(UUID id, Creature creature) {
-		this.creatureRepository.updateCreatureByID(id, creatureMapper.toCreatureEntity(creature));
+        Optional<CreatureEntity> optionalCreatureEntity = this.creatureRepository.findById(id);
+
+            CreatureEntity oldCreature = optionalCreatureEntity.get();
+            CreatureEntity newCreature = creatureMapper.toCreatureEntity(creature);
+            newCreature.setId(oldCreature.getId());
+            this.creatureRepository.save(newCreature);
+
     }
 
 }
