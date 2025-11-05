@@ -16,6 +16,7 @@ public class CreatureService {
 
 	private final CreatureRepository creatureRepository;
 	private final CreatureMapper creatureMapper;
+	private static final java.util.Random RANDOM = new java.util.Random();
 
 	CreatureService(CreatureRepository creatureRepository, CreatureMapper creatureMapper) {
 		this.creatureRepository = creatureRepository;
@@ -36,11 +37,13 @@ public class CreatureService {
 
 	public void updateCreatureByID(UUID id, Creature creature) {
 		Optional<CreatureEntity> optionalCreatureEntity = this.creatureRepository.findById(id);
-
-		CreatureEntity oldCreature = optionalCreatureEntity.get();
-		CreatureEntity newCreature = creatureMapper.toCreatureEntity(creature);
-		newCreature.setId(oldCreature.getId());
-		this.creatureRepository.save(newCreature);
+		if (optionalCreatureEntity.isPresent()) {
+			CreatureEntity oldCreature = optionalCreatureEntity.get();
+			CreatureEntity newCreature = creatureMapper.toCreatureEntity(creature);
+			newCreature.setId(oldCreature.getId());
+			this.creatureRepository.save(newCreature);
+		}
+		// Optional: else-Block für Fehlerbehandlung
 	}
 
 	public UUID createCreature(Creature creature) {
@@ -56,7 +59,7 @@ public class CreatureService {
 		if (entities.isEmpty()) {
 			return null;
 		}
-		int randomIndex = new java.util.Random().nextInt(entities.size());
+		int randomIndex = RANDOM.nextInt(entities.size());
 		CreatureEntity entity = entities.get(randomIndex);
 		return creatureMapper.toCreature(entity);
 	}
