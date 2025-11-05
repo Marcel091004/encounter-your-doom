@@ -35,6 +35,9 @@ public class CreatureRepositoryImpl implements CreatureRepositoryInterface {
             if (filter.getCR() != null && !filter.getCR().isEmpty()) {
                 criteria = criteria.and("CR").is(filter.getCR());
             }
+            if (filter.getUuid() != null) {
+                criteria = criteria.and("uuid").is(filter.getUuid());
+            }
         }
         query.addCriteria(criteria);
         return mongoTemplate.find(query, CreatureEntity.class);
