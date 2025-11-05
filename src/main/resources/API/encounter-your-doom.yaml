@@ -649,6 +649,8 @@ components:
 
     Creature:
       type: object
+      required:
+        - name
       properties:
         Id:
           type: string
