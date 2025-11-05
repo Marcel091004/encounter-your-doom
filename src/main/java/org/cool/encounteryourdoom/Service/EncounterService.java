@@ -1,26 +1,39 @@
 package org.cool.encounteryourdoom.Service;
 
+import org.cool.encounteryourdoom.Mapper.EncounterMapper;
 import org.cool.encounteryourdoom.Repository.EncounterRepository;
+import org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter;
 import org.cool.encounteryourdoom.model.EncounterEntity;
+import org.openapitools.model.Encounter;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class EncounterService {
 
-    //TODO : Implement EncounterService
+	//TODO : Implement EncounterService
 
-    private final EncounterRepository encounterRepository;
+	private final EncounterRepository encounterRepository;
+	private final EncounterMapper encounterMapper;
 
-    EncounterService(EncounterRepository encounterRepository) {
-        this.encounterRepository = encounterRepository;
-    }
+	EncounterService(EncounterRepository encounterRepository, EncounterMapper encounterMapper) {
+		this.encounterRepository = encounterRepository;
+		this.encounterMapper = encounterMapper;
+	}
 
+	public List<Encounter> getAllEncounters(EncounterParameterFilter filter) {
+		List<EncounterEntity> entities = this.encounterRepository.findEncountersByFilters(filter);
+		return encounterMapper.toEncounterList(entities);
+	}
 
-    public void save(EncounterEntity encounter){
-
-
-        encounterRepository.save(encounter);
-    }
-
+	public UUID createEncounter(Encounter encounter) {
+		EncounterEntity entity = encounterMapper.toEncounterEntity(encounter);
+		UUID id = UUID.randomUUID();
+		entity.setId(id);
+		this.encounterRepository.save(entity);
+		return id;
+	}
 
 }
