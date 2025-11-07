@@ -34,5 +34,11 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 		return ResponseEntity.ok().build();
 	}
 
+	@Override
+	public ResponseEntity<UUID> createNewEncounterForUser(UUID id, Encounter encounter) {
+		//TODO this is not yet implemented
+		UUID response = UUID.randomUUID();
+		return ResponseEntity.ok(response);
+	}
 
 }

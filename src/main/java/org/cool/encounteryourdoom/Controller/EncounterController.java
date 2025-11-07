@@ -43,7 +43,7 @@ public class EncounterController implements EncounterApi {
 
 	@Override
 	public ResponseEntity<Void> updatePublicEncounterById(UUID id, Encounter encounter) {
-		//TODO this is not yet implemented
+		encounterService.updateEncounter(id, encounter);
 		return ResponseEntity.ok().build();
 	}
 
@@ -59,17 +59,15 @@ public class EncounterController implements EncounterApi {
 		return ResponseEntity.ok(response);
 	}
 
-//	@Override
-//	public ResponseEntity<UUID> createNewEncounterForUser(UUID id, Encounter encounter) {
-//		//TODO this is not yet implemented
-//		UUID response = UUID.randomUUID();
-//		return ResponseEntity.ok(response);
-//	}
-
 	@Override
 	public ResponseEntity<Encounter> getRandomEncounter(Region region, Rarity rarity, DifficultyLevel difficultyLevel, Integer partyLevel) {
-		//TODO this is not yet implemented
-		Encounter encounter = new Encounter(); // Replace with actual encounter object
+		EncounterParameterFilter filter = new EncounterParameterFilter();
+		filter.setRegion(region);
+		filter.setRarity(rarity);
+		filter.setDifficultyLevel(difficultyLevel);
+		filter.setPartyLevel(partyLevel);
+
+		Encounter encounter = encounterService.getRandomEncounter();
 		return ResponseEntity.ok(encounter);
 	}
 

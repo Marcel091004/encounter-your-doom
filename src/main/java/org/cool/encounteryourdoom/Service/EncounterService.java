@@ -41,4 +41,24 @@ public class EncounterService {
 		return id;
 	}
 
+	public Encounter getRandomEncounter() {
+		List<EncounterEntity> entities = this.encounterRepository.findEncountersByFilters(new EncounterParameterFilter());
+		if (entities.isEmpty()) {
+			return null;
+		}
+		int randomIndex = (int) (Math.random() * entities.size());
+		EncounterEntity randomEntity = entities.get(randomIndex);
+		return encounterMapper.toEncounter(randomEntity);
+	}
+
+	public void updateEncounter(UUID id, Encounter encounter) {
+		EncounterEntity entity = this.encounterRepository.findById(id).orElse(null);
+		if (entity != null) {
+			EncounterEntity updatedEntity = encounterMapper.toEncounterEntity(encounter);
+			updatedEntity.setId(id);
+			this.encounterRepository.save(updatedEntity);
+		} else {
+			throw new IllegalArgumentException("Encounter with ID " + id + " does not exist.");
+		}
+	}
 }
