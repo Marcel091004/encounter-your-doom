@@ -2,7 +2,6 @@ package org.cool.encounteryourdoom.Controller;
 
 import org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter;
 import org.cool.encounteryourdoom.Service.EncounterService;
-import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.openapitools.api.EncounterApi;
 import org.openapitools.model.DifficultyLevel;
 import org.openapitools.model.Encounter;
@@ -32,15 +31,14 @@ public class EncounterController implements EncounterApi {
 		filter.setDifficultyLevel(difficultyLevel);
 		filter.setPartyLevel(partyLevel);
 
-		List<Encounter> encounters = encounterService.getAllEncounters(filter);
+		List<Encounter> encounters = encounterService.getAllPublicEncounters(filter);
 		return ResponseEntity.ok(encounters);
 	}
 
 	@Override
 	public ResponseEntity<Encounter> getPublicEncounterById(UUID id) {
-		//TODO this is not yet implemented
-		Encounter encounters = new Encounter(); // Replace with actual encounter objects
-		return ResponseEntity.ok(encounters);
+		Encounter encounter = encounterService.getEncounterById(id);
+		return ResponseEntity.ok(encounter);
 	}
 
 	@Override

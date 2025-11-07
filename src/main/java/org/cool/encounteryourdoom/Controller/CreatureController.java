@@ -21,7 +21,6 @@ public class CreatureController implements CreatureApi {
         this.creatureService = creatureService;
     }
 
-
     @Override
     public ResponseEntity<List<Creature>> getCreature(Region region, Rarity rarity, String CR) {
 

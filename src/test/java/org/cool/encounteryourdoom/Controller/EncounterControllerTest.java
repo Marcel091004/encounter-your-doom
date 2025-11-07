@@ -33,13 +33,13 @@ class EncounterControllerTest {
         DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
         Integer partyLevel = 3;
         List<Encounter> encounters = Arrays.asList(new Encounter(), new Encounter());
-        when(encounterService.getAllEncounters(any())).thenReturn(encounters);
+        when(encounterService.getAllPublicEncounters(any())).thenReturn(encounters);
 
         ResponseEntity<List<Encounter>> response = encounterController.getAllPublicEncounters(region, rarity, difficultyLevel, partyLevel);
 
         assertEquals(ResponseEntity.ok(encounters), response);
         ArgumentCaptor<org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter> captor = ArgumentCaptor.forClass(org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter.class);
-        verify(encounterService).getAllEncounters(captor.capture());
+        verify(encounterService).getAllPublicEncounters(captor.capture());
         org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter filter = captor.getValue();
         assertEquals(region, filter.getRegion());
         assertEquals(rarity, filter.getRarity());
@@ -50,13 +50,13 @@ class EncounterControllerTest {
     @Test
     void getAllPublicEncounters_shouldHandleNullParameters() {
         List<Encounter> encounters = Arrays.asList(new Encounter());
-        when(encounterService.getAllEncounters(any())).thenReturn(encounters);
+        when(encounterService.getAllPublicEncounters(any())).thenReturn(encounters);
 
         ResponseEntity<List<Encounter>> response = encounterController.getAllPublicEncounters(null, null, null, null);
 
         assertEquals(ResponseEntity.ok(encounters), response);
         ArgumentCaptor<org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter> captor = ArgumentCaptor.forClass(org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter.class);
-        verify(encounterService).getAllEncounters(captor.capture());
+        verify(encounterService).getAllPublicEncounters(captor.capture());
         org.cool.encounteryourdoom.Repository.Filter.EncounterParameterFilter filter = captor.getValue();
         assertNull(filter.getRegion());
         assertNull(filter.getRarity());

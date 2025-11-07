@@ -29,14 +29,14 @@ class EncounterServiceTest {
     }
 
     @Test
-    void getAllEncounters_shouldReturnMappedList() {
+    void getAllPublicEncounters_shouldReturnMappedList() {
         EncounterParameterFilter filter = mock(EncounterParameterFilter.class);
         List<EncounterEntity> entities = Arrays.asList(new EncounterEntity(), new EncounterEntity());
         List<Encounter> encounters = Arrays.asList(new Encounter(), new Encounter());
         when(encounterRepository.findEncountersByFilters(filter)).thenReturn(entities);
         when(encounterMapper.toEncounterList(entities)).thenReturn(encounters);
 
-        List<Encounter> result = encounterService.getAllEncounters(filter);
+        List<Encounter> result = encounterService.getAllPublicEncounters(filter);
         assertEquals(encounters, result);
     }
 

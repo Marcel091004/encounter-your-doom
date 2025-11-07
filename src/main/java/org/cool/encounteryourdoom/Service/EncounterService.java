@@ -23,9 +23,14 @@ public class EncounterService {
 		this.encounterMapper = encounterMapper;
 	}
 
-	public List<Encounter> getAllEncounters(EncounterParameterFilter filter) {
+	public List<Encounter> getAllPublicEncounters(EncounterParameterFilter filter) {
 		List<EncounterEntity> entities = this.encounterRepository.findEncountersByFilters(filter);
 		return encounterMapper.toEncounterList(entities);
+	}
+
+	public Encounter getEncounterById(UUID id) {
+		EncounterEntity entity = this.encounterRepository.findById(id).orElse(null);
+		return encounterMapper.toEncounter(entity);
 	}
 
 	public UUID createEncounter(Encounter encounter) {
