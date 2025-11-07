@@ -16,7 +16,7 @@ public class CreatureService {
 
 	private final CreatureRepository creatureRepository;
 	private final CreatureMapper creatureMapper;
-	private static final java.util.Random RANDOM = new java.util.Random();
+	private final java.util.Random RANDOM = new java.util.Random();
 
 	CreatureService(CreatureRepository creatureRepository, CreatureMapper creatureMapper) {
 		this.creatureRepository = creatureRepository;
