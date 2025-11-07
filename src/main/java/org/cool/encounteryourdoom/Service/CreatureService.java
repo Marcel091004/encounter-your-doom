@@ -1,47 +1,67 @@
 package org.cool.encounteryourdoom.Service;
 
+import org.cool.encounteryourdoom.Mapper.CreatureMapper;
 import org.cool.encounteryourdoom.Repository.CreatureRepository;
+import org.cool.encounteryourdoom.Repository.Filter.CreatureParameterFilter;
 import org.cool.encounteryourdoom.model.CreatureEntity;
 import org.openapitools.model.Creature;
-import org.openapitools.model.Rarity;
-import org.openapitools.model.Region;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CreatureService {
 
-    //TODO : Implement CreatureService
+	private final CreatureRepository creatureRepository;
+	private final CreatureMapper creatureMapper;
+	private final java.util.Random RANDOM = new java.util.Random();
 
-    private final CreatureRepository creatureRepository;
+	CreatureService(CreatureRepository creatureRepository, CreatureMapper creatureMapper) {
+		this.creatureRepository = creatureRepository;
+		this.creatureMapper = creatureMapper;
+	}
 
-    CreatureService(CreatureRepository creatureRepository) {
-        this.creatureRepository = creatureRepository;
-    }
 
-    public List<CreatureEntity> getAllCreatures() {
+	public List<Creature> getAllCreatures(CreatureParameterFilter filter) {
+		List<CreatureEntity> entities = this.creatureRepository.findCreaturesByFilters(filter);
+		return creatureMapper.toCreatureList(entities);
+	}
 
-            return this.creatureRepository.findAll();
-    }
+	public Creature getCreatureByID(UUID ID) {
+		CreatureEntity entity = this.creatureRepository.findById(ID).orElse(null);
+		return creatureMapper.toCreature(entity);
 
-    public List<CreatureEntity> getAllCreatures(Region region) {
+	}
 
-        if ()
-            return this.creatureRepository.findAll();
-    }
+	public void updateCreatureByID(UUID id, Creature creature) {
+		Optional<CreatureEntity> optionalCreatureEntity = this.creatureRepository.findById(id);
+		if (optionalCreatureEntity.isPresent()) {
+			CreatureEntity oldCreature = optionalCreatureEntity.get();
+			CreatureEntity newCreature = creatureMapper.toCreatureEntity(creature);
+			newCreature.setId(oldCreature.getId());
+			this.creatureRepository.save(newCreature);
+		}
+		// Optional: else-Block für Fehlerbehandlung
+	}
 
-    public List<CreatureEntity> getAllCreatures(Region region, Rarity rarity, String CR) {
+	public UUID createCreature(Creature creature) {
+		CreatureEntity entity = creatureMapper.toCreatureEntity(creature);
+		UUID id = UUID.randomUUID();
+		entity.setId(id);
+		this.creatureRepository.save(entity);
+		return id;
+	}
 
-        if ()
-            return this.creatureRepository.findAll();
-    }
-
-    public List<CreatureEntity> getAllCreatures(Region region, Rarity rarity, String CR) {
-
-        if ()
-        return this.creatureRepository.findAll();
-    }
+	public Creature getRandomCreature(CreatureParameterFilter filter) {
+		List<CreatureEntity> entities = this.creatureRepository.findCreaturesByFilters(filter);
+		if (entities.isEmpty()) {
+			return null;
+		}
+		int randomIndex = RANDOM.nextInt(entities.size());
+		CreatureEntity entity = entities.get(randomIndex);
+		return creatureMapper.toCreature(entity);
+	}
 
 }
