@@ -378,7 +378,7 @@ paths:
         500:
           description: Internal Server Error
 
-  /encounter/{userid}:
+  /privateEncounter/{userid}:
     get:
       summary: Gets all encounters for a specific private userspace.
       operationId: getAllEncountersForUser
@@ -406,7 +406,7 @@ paths:
           description: Not Found - e.g., no encounters found in the private userspace.
         500:
           description: Internal Server Error
-  /encounter/{userid}/{id}:
+  /privateEncounter/{userid}/{id}:
     get:
       summary: Gets encounter for a specific private userspace.
       operationId: getEncounterForUser
@@ -439,7 +439,7 @@ paths:
         500:
           description: Internal Server Error
 
-  /encounter/{userid}/{id}/edit:
+  /privateEncounter/{userid}/{id}/edit:
     put:
       summary: Update encounter for a specific private userspace.
       operationId: updateEncounterForUser
@@ -472,7 +472,7 @@ paths:
           description: Not Found - e.g., no encounter found for given Id.
         500:
           description: Internal Server Error
-  /encounter/{userid}/{id}/start:
+  /privateEncounter/{userid}/{id}/start:
     post:
       summary: Start an encounter for a specific private userspace.
       operationId: startEncounterForUser
@@ -500,7 +500,7 @@ paths:
           description: Not Found - e.g., no encounter found for given Id.
         500:
           description: Internal Server Error
-  /encounter/{userid}/new:
+  /privateEncounter/{userid}/new:
     post:
       summary: Creates a new encounter for a specific private userspace.
       operationId: createNewEncounterForUser
