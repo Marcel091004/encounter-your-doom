@@ -22,16 +22,20 @@ public class UserController implements UserApi {
 
         boolean isUnique = false;
         UUID response;
+        UUID MongoID;
 
         do {
+            MongoID = UUID.randomUUID();
              response = UUID.randomUUID();
-            if(this.userRepository.findById(response).isEmpty()) {
+            if(this.userRepository.findAllByUserId(response).isEmpty() && this.userRepository.findById(MongoID).isEmpty()) {
                 isUnique = true;
             }
         }while (!isUnique);
 
         privateEncounter emptyUser = new privateEncounter();
-        emptyUser.setId(response);
+
+        emptyUser.setUserId(response);
+        emptyUser.setId(MongoID);
         this.userRepository.save(emptyUser);
 
     return ResponseEntity.ok(response);

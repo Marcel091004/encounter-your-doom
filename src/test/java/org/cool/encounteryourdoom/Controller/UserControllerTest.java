@@ -39,7 +39,7 @@ class UserControllerTest {
        UUID userId = UUID.fromString(body);
 
        Assertions.assertNotNull(userId);
-       Assertions.assertTrue(userRepository.findById(userId).isPresent());
+       Assertions.assertFalse(userRepository.findAllByUserId(userId).isEmpty());
 
     }
 }
