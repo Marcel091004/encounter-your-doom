@@ -651,6 +651,13 @@ components:
       type: object
       required:
         - name
+        - initiative
+        - HP
+        - AC
+        - statBlock
+        - CR
+        - attack
+        - speed
       properties:
         Id:
           type: string
@@ -725,6 +732,10 @@ components:
             type: string
           example: [ "Darkvision", "Pack Tactics" ]
           description: "Special traits or abilities of the creature."
+        attack:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attack'
 
     Attack:
       type: object
@@ -777,6 +788,10 @@ components:
 
     Encounter:
       type: object
+      required:
+        - name
+        - difficultyLevel
+        - description
       properties:
         name:
           type: string
