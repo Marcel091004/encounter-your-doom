@@ -383,7 +383,7 @@ paths:
       summary: Gets all encounters for a specific private userspace.
       operationId: getAllEncountersForUser
       tags:
-        - Encounter
+        - privateEncounter
       parameters:
         - name: userid
           in: path
@@ -411,7 +411,7 @@ paths:
       summary: Gets encounter for a specific private userspace.
       operationId: getEncounterForUser
       tags:
-        - Encounter
+        - privateEncounter
       parameters:
         - name: userid
           in: path
@@ -449,7 +449,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Encounter'
       tags:
-        - Encounter
+        - privateEncounter
       parameters:
         - name: id
           in: path
@@ -477,7 +477,7 @@ paths:
       summary: Start an encounter for a specific private userspace.
       operationId: startEncounterForUser
       tags:
-        - Encounter
+        - privateEncounter
       parameters:
         - name: id
           in: path
@@ -510,7 +510,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Encounter'
       tags:
-        - Encounter
+        - privateEncounter
       parameters:
         - name: userid
           in: path
