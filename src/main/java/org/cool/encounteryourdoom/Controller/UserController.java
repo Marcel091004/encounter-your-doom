@@ -25,13 +25,13 @@ public class UserController implements UserApi {
 
         do {
              response = UUID.randomUUID();
-            if(this.userRepository.findById(response).isEmpty()) {
+            if(this.userRepository.findAllByUserId(response).isEmpty()) {
                 isUnique = true;
             }
         }while (!isUnique);
 
         privateEncounter emptyUser = new privateEncounter();
-        emptyUser.setId(response);
+        emptyUser.setUserId(response);
         this.userRepository.save(emptyUser);
 
     return ResponseEntity.ok(response);
