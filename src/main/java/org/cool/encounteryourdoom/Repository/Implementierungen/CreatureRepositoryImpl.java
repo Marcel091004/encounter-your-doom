@@ -32,8 +32,8 @@ public class CreatureRepositoryImpl implements CreatureRepositoryInterface {
             if (filter.getRarity() != null) {
                 criteria = criteria.and("rarity").is(filter.getRarity());
             }
-            if (filter.getCR() != null && !filter.getCR().isEmpty()) {
-                criteria = criteria.and("CR").is(filter.getCR());
+            if (filter.getCr() != null && !filter.getCr().isEmpty()) {
+                criteria = criteria.and("CR").is(filter.getCr());
             }
             if (filter.getUuid() != null) {
                 criteria = criteria.and("uuid").is(filter.getUuid());

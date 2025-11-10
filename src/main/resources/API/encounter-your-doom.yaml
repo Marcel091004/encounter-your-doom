@@ -25,7 +25,7 @@ paths:
           schema:
             type: enum
             $ref: '#/components/schemas/Rarity'
-        - name: 'CR'
+        - name: 'cr'
           in: query
           required: false
           schema:
@@ -155,7 +155,7 @@ paths:
           schema:
             type: enum
             $ref: '#/components/schemas/Rarity'
-        - name: 'CR'
+        - name: 'cr'
           in: query
           required: false
           schema:
@@ -649,6 +649,15 @@ components:
 
     Creature:
       type: object
+      required:
+        - name
+        - initiative
+        - HP
+        - AC
+        - statBlock
+        - cr
+        - attack
+        - speed
       properties:
         Id:
           type: string
@@ -709,7 +718,7 @@ components:
           items:
             $ref: '#/components/schemas/Rarity'
             example: "Common"
-        CR:
+        cr:
           type: string
           example: "1/4"
           description: "Challenge Rating indicating the difficulty of the creature."
@@ -723,6 +732,10 @@ components:
             type: string
           example: [ "Darkvision", "Pack Tactics" ]
           description: "Special traits or abilities of the creature."
+        attack:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attack'
 
     Attack:
       type: object
@@ -775,6 +788,10 @@ components:
 
     Encounter:
       type: object
+      required:
+        - name
+        - difficultyLevel
+        - description
       properties:
         name:
           type: string
