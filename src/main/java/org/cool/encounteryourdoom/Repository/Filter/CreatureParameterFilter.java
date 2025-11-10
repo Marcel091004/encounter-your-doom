@@ -13,7 +13,7 @@ public class CreatureParameterFilter {
 
     private Region region;
     private Rarity rarity;
-    private String CR;
+    private String cr;
     private UUID uuid;
 
 }

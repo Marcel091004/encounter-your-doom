@@ -31,7 +31,7 @@ class CreatureEntityTest {
         creature.setId(UUID.randomUUID());
         creature.setName("DemonicTurtle");
         creature.setAC(15);
-        creature.setCR("14");
+        creature.setCr("14");
         creature.setHP(120);
         creature.setImmunities(List.of(DamageTypes.COLD));
         creature.setResistances(List.of(DamageTypes.FIRE));
@@ -56,7 +56,7 @@ class CreatureEntityTest {
         assertNotNull(found);
         assertEquals("DemonicTurtle", found.getName());
         assertEquals(15, found.getAC());
-        assertEquals("14", found.getCR());
+        assertEquals("14", found.getCr());
         assertEquals(120, found.getHP());
         assertEquals(List.of(DamageTypes.COLD), found.getImmunities());
         assertEquals(List.of(DamageTypes.FIRE), found.getResistances());

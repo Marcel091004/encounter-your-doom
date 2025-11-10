@@ -77,7 +77,7 @@ class CreatureRepositoryImplTest {
 	void testFindCreaturesByFilters_WithCR() {
 		// given
 		CreatureParameterFilter filter = new CreatureParameterFilter();
-		filter.setCR("10");
+		filter.setCr("10");
 
 		when(mongoTemplate.find(any(Query.class), eq(CreatureEntity.class))).thenReturn(List.of(new CreatureEntity()));
 

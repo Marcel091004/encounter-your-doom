@@ -28,7 +28,7 @@ public class CreatureController implements CreatureApi {
         CreatureParameterFilter filter = new CreatureParameterFilter();
         filter.setRegion(region);
         filter.setRarity(rarity);
-        filter.setCR(CR);
+        filter.setCr(CR);
 
         return ResponseEntity.ok(creatureService.getAllCreatures(filter));
     }
@@ -60,7 +60,7 @@ public class CreatureController implements CreatureApi {
 		CreatureParameterFilter filter = new CreatureParameterFilter();
 		filter.setRegion(region);
 		filter.setRarity(rarity);
-		filter.setCR(CR);
+		filter.setCr(CR);
 
 		return ResponseEntity.ok(creatureService.getRandomCreature(filter));
     }
