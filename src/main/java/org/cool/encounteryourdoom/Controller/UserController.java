@@ -28,13 +28,13 @@ public class UserController implements UserApi {
             if(this.userRepository.findById(response).isEmpty()) {
                 isUnique = true;
             }
-        }while (isUnique);
+        }while (!isUnique);
 
         privateEncounter emptyUser = new privateEncounter();
         emptyUser.setId(response);
         this.userRepository.save(emptyUser);
 
-        return ResponseEntity.ok(response);
+    return ResponseEntity.ok(response);
     }
 
 
