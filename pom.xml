@@ -10,7 +10,7 @@
     </parent>
     <groupId>datev.enabling</groupId>
     <artifactId>encounter-your-doom</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>encounter-your-doom</name>
     <description>encounter-your-doom</description>
     <url/>
