@@ -1,4 +1,4 @@
-package org.cool.encounteryourdoom.Controller;
+package org.cool.encounteryourdoom.API;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

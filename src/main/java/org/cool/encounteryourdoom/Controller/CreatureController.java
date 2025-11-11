@@ -7,12 +7,14 @@ import org.openapitools.model.Creature;
 import org.openapitools.model.Rarity;
 import org.openapitools.model.Region;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/datev/v1")
 public class CreatureController implements CreatureApi {
 
     private final CreatureService creatureService;

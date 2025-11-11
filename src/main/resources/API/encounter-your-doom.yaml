@@ -8,7 +8,7 @@ servers:
 paths:
   /creature:
     get:
-      summary: Returns a creature.
+      summary: Returns all creatures.
       operationId: getCreature
       tags:
         - Creature
@@ -127,6 +127,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UUID'
+              #TODO Hier weiter
         400:
           description: Bad Request - e.g., due to already existing creature.
         403:
