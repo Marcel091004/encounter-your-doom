@@ -1,7 +1,5 @@
 package org.cool.encounteryourdoom.API;
 
-import org.cool.encounteryourdoom.Repository.Filter.CreatureParameterFilter;
-import org.cool.encounteryourdoom.Service.CreatureService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.openapitools.api.CreatureApi;
@@ -18,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -82,7 +79,7 @@ public class CreatureApiTest {
 
 
 
-            when(CreatureApi.getCreature(null, null, null)).thenReturn(ResponseEntity.ok(List.of(testCreature)));
+            when(CreatureApi.getCreatures(null, null, null)).thenReturn(ResponseEntity.ok(List.of(testCreature)));
 
             mockMvc.perform(get("/datev/v1/creature"))
                     .andExpect(status().isOk()).andDo(print())

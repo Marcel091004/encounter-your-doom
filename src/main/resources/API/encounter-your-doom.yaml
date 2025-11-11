@@ -9,7 +9,7 @@ paths:
   /creature:
     get:
       summary: Returns all creatures.
-      operationId: getCreature
+      operationId: getCreatures
       tags:
         - Creature
       parameters:
@@ -34,7 +34,7 @@ paths:
 
       responses:
         200:
-          description: Successful response with a creature.
+          description: Successful response with all creatures.
           content:
             application/json:
               schema:
@@ -43,12 +43,29 @@ paths:
                   $ref: '#/components/schemas/Creature'
         400:
           description: Bad Request - e.g., due to /creature?region or /creature?rarity being too long.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no creature found for the specified region or rarity.
-        500:
-          description: Internal Server Error
+
+    post:
+      summary: Updates a creature based on its ID.
+      operationId: createCreature
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Creature'
+      tags:
+        - Creature
+      responses:
+        201:
+          description: Successfully created creature.
+          headers:
+            Location:
+              description: URI of the newly created creature
+              schema:
+                type: string
+                format: uri
+              #TODO Hier weiter
+        400:
+          description: Bad Request - e.g., due to already existing creature.
 
   /creature/{id}:
     get:
@@ -72,14 +89,7 @@ paths:
                 $ref: '#/components/schemas/Creature'
         400:
           description: Bad Request - e.g., due to invalid UUID format.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no creature found with the specified ID.
-        500:
-          description: Internal Server Error
 
-  /creature/{id}/edit:
     put:
       summary: Updates a creature based on its ID.
       operationId: updateCreatureById
@@ -98,44 +108,10 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        204:
           description: Successfully updated creature.
         400:
           description: Bad Request - e.g., due to invalid UUID format.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no creature found with the specified ID.
-        500:
-          description: Internal Server Error
-
-  /creature/new:
-    post:
-      summary: Updates a creature based on its ID.
-      operationId: createNewCreature
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Creature'
-      tags:
-        - Creature
-      responses:
-        200:
-          description: Successfully created creature.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UUID'
-              #TODO Hier weiter
-        400:
-          description: Bad Request - e.g., due to already existing creature.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no creature found with the specified ID.
-        500:
-          description: Internal Server Error
 
   /creature/random:
     get:
@@ -163,7 +139,6 @@ paths:
             type: string
             description: 'Challenge Rating indicating the difficulty of the creature (1/8 up to 30).'
 
-
       responses:
         200:
           description: Successfully got a random creature.
@@ -171,12 +146,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Creature'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no creature found.
-        500:
-          description: Internal Server Error
 
   /encounter:
     get:

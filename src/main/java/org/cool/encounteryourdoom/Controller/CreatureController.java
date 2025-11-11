@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class CreatureController implements CreatureApi {
     }
 
     @Override
-    public ResponseEntity<List<Creature>> getCreature(Region region, Rarity rarity, String CR) {
+    public ResponseEntity<List<Creature>> getCreatures(Region region, Rarity rarity, String CR) {
 
         CreatureParameterFilter filter = new CreatureParameterFilter();
         filter.setRegion(region);
@@ -50,14 +51,15 @@ public class CreatureController implements CreatureApi {
     }
 
     @Override
-    public ResponseEntity<UUID> createNewCreature(Creature creature) {
+    public ResponseEntity<Void> createCreature(Creature creature) {
 		UUID response = creatureService.createCreature(creature);
-        return ResponseEntity.ok(response);
+        URI location = URI.create("/datev/v1/creature/" + response);
+        return ResponseEntity.created(location).build();
     }
 
     @Override
     public ResponseEntity<Creature> getRandomCreature(Region region, Rarity rarity, String CR) {
-        //TODO this is not yet implemented
+        //TODO check why this also shows Objects with null in the respective parameter
 		CreatureParameterFilter filter = new CreatureParameterFilter();
 		filter.setRegion(region);
 		filter.setRarity(rarity);
