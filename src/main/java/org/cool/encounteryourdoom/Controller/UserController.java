@@ -4,11 +4,13 @@ import org.cool.encounteryourdoom.Repository.UserRepository;
 import org.cool.encounteryourdoom.model.privateEncounter;
 import org.openapitools.api.UserApi;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/datev/v1")
 public class UserController implements UserApi {
 
     private final UserRepository userRepository;

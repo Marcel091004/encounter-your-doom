@@ -1,8 +1,8 @@
-package org.cool.encounteryourdoom.Controller;
+package org.cool.encounteryourdoom;
 
-import org.cool.encounteryourdoom.MongoDBTestContainer;
 import org.cool.encounteryourdoom.Repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @ImportTestcontainers(MongoDBTestContainer.class)
 @AutoConfigureMockMvc
-class UserControllerTest {
+public class ComponentTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -29,17 +29,21 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    void testGenerateUserId() throws Exception {
-       MvcResult result = mockMvc.perform(post("/user/generation"))
-                .andExpect(status().isOk()).andReturn();
+    @Nested
+    class User {
 
-       String body = result.getResponse().getContentAsString();
-       body = body.replace("\"", ""); // "" machen den UUID String kaputt
-       UUID userId = UUID.fromString(body);
+        @Test
+        void callUserGenerationShouldReturnValidUserId() throws Exception {
+            MvcResult result = mockMvc.perform(post("/datev/v1/user/generation"))
+                    .andExpect(status().isOk()).andReturn();
 
-       Assertions.assertNotNull(userId);
-       Assertions.assertFalse(userRepository.findAllByUserId(userId).isEmpty());
+            String body = result.getResponse().getContentAsString();
+            body = body.replace("\"", ""); // "" machen den UUID String kaputt
+            UUID userId = UUID.fromString(body);
 
+            Assertions.assertNotNull(userId);
+            Assertions.assertFalse(userRepository.findAllByUserId(userId).isEmpty());
+
+        }
     }
 }

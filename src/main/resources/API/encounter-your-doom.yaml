@@ -4,7 +4,7 @@ info:
   description: API for the Encounter Your Doom application.
   version: 0.0.1
 servers:
-  - url: 'https'
+  - url: 'http://localhost:8080/datev/v1'
 paths:
   /creature:
     get:
