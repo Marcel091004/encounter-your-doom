@@ -1,12 +1,11 @@
 package org.cool.encounteryourdoom.API;
 
+import org.cool.encounteryourdoom.Controller.CreatureController;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.openapitools.api.CreatureApi;
 import org.openapitools.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -17,19 +16,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@SpringBootTest
 @AutoConfigureMockMvc
 public class CreatureApiTest {
 
     @MockitoBean
-    private CreatureApi CreatureApi;
+    private CreatureController CreatureController;
 
     @Autowired
     private MockMvc mockMvc;
@@ -81,7 +79,7 @@ public class CreatureApiTest {
 
 
 
-            when(CreatureApi.getCreatures(null, null, null)).thenReturn(ResponseEntity.ok(List.of(testCreature)));
+            when(CreatureController.getCreatures(null, null, null)).thenReturn(ResponseEntity.ok(List.of(testCreature)));
 
             mockMvc.perform(get("/datev/v1/creature"))
                     .andExpect(status().isOk()).andDo(print())
