@@ -45,7 +45,7 @@ paths:
           description: Bad Request - e.g., due to /creature?region or /creature?rarity being too long.
 
     post:
-      summary: Updates a creature based on its ID.
+      summary: Creates a new creature.
       operationId: createCreature
       requestBody:
         content:
@@ -187,12 +187,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Encounter'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found.
-        500:
-          description: Internal Server Error
+
+    post:
+      summary: Creates a new encounter.
+      operationId: createNewEncounter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      tags:
+        - Encounter
+      responses:
+        201:
+          description: Successfully created encounter.
+          headers:
+            Location:
+              description: URI of the newly created encounter
+              schema:
+                type: string
+                format: uri
 
   /encounter/{id}:
     get:
@@ -214,14 +228,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Encounter'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found with the specified ID.
-        500:
-          description: Internal Server Error
-
-  /encounter/{id}/edit:
     put:
       summary: Update a public encounter by its Id.
       operationId: updatePublicEncounterById
@@ -240,15 +246,10 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        204:
           description: Successfully updated a Encounter by Id.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found with the specified ID.
-        500:
-          description: Internal Server Error
 
+#TODO: Was ist hiermit?
   /encounter/{id}/{userid}/move:
     put:
       summary: Move a encounter to the privat userspace.
@@ -269,39 +270,8 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        204:
           description: Successfully moved a encounter to the privat userspace.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found with the specified ID.
-        500:
-          description: Internal Server Error
-
-  /encounter/new:
-    post:
-      summary: Creates a new encounter.
-      operationId: createNewEncounter
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Encounter'
-      tags:
-        - Encounter
-      responses:
-        200:
-          description: Successfully created encounter.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UUID'
-        400:
-          description: Bad Request - e.g., due to already existing encounter.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        500:
-          description: Internal Server Error
 
   /encounter/random:
     get:
@@ -341,12 +311,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Encounter'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found.
-        500:
-          description: Internal Server Error
 
   /privateEncounter/{userid}:
     get:
@@ -370,12 +334,34 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Encounter'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounters found in the private userspace.
-        500:
-          description: Internal Server Error
+    post:
+      summary: Creates a encounter for a specific private userspace.
+      operationId: createEncounterForUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      tags:
+        - privateEncounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        201:
+          description: Successfully created encounter for the private userspace.
+          headers:
+            Location:
+              description: URI of the newly created private Encounter
+              schema:
+                type: string
+                format: uri
+
+  #TODO: URL anpassen?
   /privateEncounter/{userid}/{id}:
     get:
       summary: Gets encounter for a specific private userspace.
@@ -402,14 +388,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Encounter'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found for given Id.
-        500:
-          description: Internal Server Error
-
-  /privateEncounter/{userid}/{id}/edit:
     put:
       summary: Update encounter for a specific private userspace.
       operationId: updateEncounterForUser
@@ -434,15 +412,8 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        204:
           description: Successfully updated encounter for the private userspace.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found for given Id.
-        500:
-          description: Internal Server Error
-  /privateEncounter/{userid}/{id}/start:
     post:
       summary: Start an encounter for a specific private userspace.
       operationId: startEncounterForUser
@@ -462,45 +433,10 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        204:
           description: Successfully started encounter for the private userspace.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no encounter found for given Id.
-        500:
-          description: Internal Server Error
-  /privateEncounter/{userid}/new:
-    post:
-      summary: Creates a new encounter for a specific private userspace.
-      operationId: createNewEncounterForUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Encounter'
-      tags:
-        - privateEncounter
-      parameters:
-        - name: userid
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        200:
-          description: Successfully created encounter for the private userspace.
-          content:
-            application/json:
-              schema:
-               $ref: '#/components/schemas/UUID'
-        400:
-          description: Bad Request - e.g., due to already existing encounter.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        500:
-          description: Internal Server Error
+
+  #TODO: AUch 201 als Status?
   /user/generation:
     post:
       summary: Generates a UUID to identify a user.
@@ -514,8 +450,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UUID'
-        500:
-          description: Internal Server Error
+
   /activeEncounter/{userid}:
     get:
       summary: Gets the active encounter for a specific private userspace.
@@ -536,12 +471,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ActiveEncounter'
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no active encounter found in the private userspace.
-        500:
-          description: Internal Server Error
+    delete:
+      summary: Closes the active encounter for a specific private userspace.
+      operationId: closeActiveEncounterForUser
+      tags:
+        - ActiveEncounter
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: Successfully closed the active encounter for the private userspace.
+
   /activeEncounter/{userid}/{creatureid}:
     put:
       summary: Updates a creature in the active encounter for a the active encounter.
@@ -577,38 +522,13 @@ paths:
           schema:
             type: array
             items:
-                $ref: '#/components/schemas/StatusEffects'
+              $ref: '#/components/schemas/StatusEffects'
       responses:
-        200:
+        204:
           description: Successfully updated creature in the active encounter for the private userspace.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no active encounter or creature found for given Ids.
-        500:
-          description: Internal Server Error
-  /activeEncounter/{userid}/close:
-    delete:
-      summary: Closes the active encounter for a specific private userspace.
-      operationId: closeActiveEncounterForUser
-      tags:
-        - ActiveEncounter
-      parameters:
-        - name: userid
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        200:
-          description: Successfully closed the active encounter for the private userspace.
-        403:
-          description: Forbidden - e.g., due to invalid API key.
-        404:
-          description: Not Found - e.g., no active encounter found for given Id.
-        500:
-          description: Internal Server Error
+
+
+
 components:
   schemas:
 
