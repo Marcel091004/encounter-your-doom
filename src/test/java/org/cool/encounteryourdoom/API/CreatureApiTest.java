@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +32,9 @@ public class CreatureApiTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Nested
     class getCreature {
@@ -78,12 +82,11 @@ public class CreatureApiTest {
                     .statusEffects(Collections.emptyList());
 
 
-
             when(CreatureController.getCreatures(null, null, null)).thenReturn(ResponseEntity.ok(List.of(testCreature)));
 
             mockMvc.perform(get("/datev/v1/creature"))
                     .andExpect(status().isOk()).andDo(print())
-                    .andExpect(content().string(String.valueOf(List.of(testCreature))));
+                    .andExpect(content().json(objectMapper.writeValueAsString(List.of(testCreature))));
         }
 
     }
