@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URI;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -161,6 +165,11 @@ public class EncounterApiTest {
 	class CreateEncounter {
 		@Test
 		void shouldReturn201CreatedWhenCreatingEncounter() throws Exception {
+
+			URI location = URI.create(String.format("/datev/v1/encounter/%s", UUID.randomUUID()));
+
+			when(EncounterController.createEncounter(any())).thenReturn(ResponseEntity.created(location).build());
+
 			String encounterJson = "{\"name\":\"New Encounter\",\"description\":\"A newly created encounter.\",\"difficultyLevel\":\"Medium\"}";
 			mockMvc.perform(post("/datev/v1/encounter")
 							.contentType(MediaType.APPLICATION_JSON)
