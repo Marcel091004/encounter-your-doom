@@ -123,9 +123,6 @@ public class EncounterApiTest {
 	class UpdateEncounterById {
 		@Test
 		void shouldReturn200OKWhenUpdatingEncounterById() throws Exception {
-//ToDO: anderes Mocking mit when einbauen (ABER NUR CONTROLLER, Service nicht erwähnen)
-// Wie in Marcels Beispiel
-// ACHTUNG: Es müssen bei Bedarf Interfaces gemockt werden, keine konkreten Klassen!
 			UUID id = UUID.randomUUID();
 			String encounterJson = "{\"name\":\"Test Encounter\",\"description\":\"Testfall\",\"difficultyLevel\":\"Hard\"}";
 			mockMvc.perform(put("/datev/v1/encounter/" + id)
