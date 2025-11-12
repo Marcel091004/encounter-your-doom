@@ -30,7 +30,7 @@ on:
     types:
       - closed
     branches:
-      - main # ProFlows-Setup-TODO [YOUR_DEFAULT_BRANCH_NAME] replace with your default branch name
+      - main # ProFlows-Setup [YOUR_DEFAULT_BRANCH_NAME] replace with your default branch name
 
 env:
   VERSION_BUMP: ${{ github.event.inputs.version-bump || 'minor' }}

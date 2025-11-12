@@ -63,7 +63,6 @@ paths:
               schema:
                 type: string
                 format: uri
-              #TODO Hier weiter
         400:
           description: Bad Request - e.g., due to already existing creature.
 
@@ -189,8 +188,8 @@ paths:
                   $ref: '#/components/schemas/Encounter'
 
     post:
-      summary: Creates a new encounter.
-      operationId: createNewEncounter
+      summary: Creates a encounter.
+      operationId: createEncounter
       requestBody:
         content:
           application/json:
@@ -249,8 +248,8 @@ paths:
         204:
           description: Successfully updated a Encounter by Id.
 
-#TODO: Was ist hiermit?
-  /encounter/{id}/{userid}/move:
+
+  /encounter/{id}/user/{userid}/move:
     put:
       summary: Move a encounter to the privat userspace.
       operationId: moveEncounterToUserSpace
@@ -361,8 +360,7 @@ paths:
                 type: string
                 format: uri
 
-  #TODO: URL anpassen?
-  /privateEncounter/{userid}/{id}:
+  /privateEncounter/{id}/user/{userid}:
     get:
       summary: Gets encounter for a specific private userspace.
       operationId: getEncounterForUser
@@ -436,7 +434,6 @@ paths:
         204:
           description: Successfully started encounter for the private userspace.
 
-  #TODO: AUch 201 als Status?
   /user/generation:
     post:
       summary: Generates a UUID to identify a user.
@@ -444,12 +441,14 @@ paths:
       tags:
         - User
       responses:
-        200:
+        201:
           description: Successfully generated a user ID.
-          content:
-            application/json:
+          headers:
+            Location:
+              description: URI of the newly created creature
               schema:
-                $ref: '#/components/schemas/UUID'
+                type: string
+                format: uri
 
   /activeEncounter/{userid}:
     get:
@@ -526,7 +525,6 @@ paths:
       responses:
         204:
           description: Successfully updated creature in the active encounter for the private userspace.
-
 
 
 components:
