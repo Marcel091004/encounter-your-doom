@@ -56,7 +56,7 @@ public class EncounterController implements EncounterApi {
 	}
 
 	@Override
-	public ResponseEntity<Void> createNewEncounter(Encounter encounter) {
+	public ResponseEntity<Void> createEncounter(Encounter encounter) {
 		//TODO this is not yet implemented
 		Void response = null;
 		return ResponseEntity.ok(response);

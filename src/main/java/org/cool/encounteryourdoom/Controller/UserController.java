@@ -7,41 +7,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/datev/v1")
 public class UserController implements UserApi {
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	public UserController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    @Override
-    public ResponseEntity<UUID> generateUserId() {
+	@Override
+	public ResponseEntity<Void> generateUserId() {
 
-        boolean isUnique = false;
-        UUID response;
-        UUID MongoID;
+		boolean isUnique = false;
+		UUID response;
+		UUID MongoID;
 
-        do {
-            MongoID = UUID.randomUUID();
-             response = UUID.randomUUID();
-            if(this.userRepository.findAllByUserId(response).isEmpty() && this.userRepository.findById(MongoID).isEmpty()) {
-                isUnique = true;
-            }
-        }while (!isUnique);
+		do {
+			MongoID = UUID.randomUUID();
+			response = UUID.randomUUID();
+			if (this.userRepository.findAllByUserId(response).isEmpty() && this.userRepository.findById(MongoID).isEmpty()) {
+				isUnique = true;
+			}
+		} while (!isUnique);
 
-        privateEncounter emptyUser = new privateEncounter();
+		privateEncounter emptyUser = new privateEncounter();
 
-        emptyUser.setUserId(response);
-        emptyUser.setId(MongoID);
-        this.userRepository.save(emptyUser);
+		emptyUser.setUserId(response);
+		emptyUser.setId(MongoID);
+		this.userRepository.save(emptyUser);
 
-    return ResponseEntity.ok(response);
-    }
+		URI location = URI.create(String.format("/datev/v1/users/%s", response.toString()));
+		return ResponseEntity.created(location).build();
+	}
 
 
 }

@@ -31,7 +31,7 @@ public class EncounterApiTest {
             UUID id = UUID.randomUUID();
             UUID userid = UUID.randomUUID();
 
-            mockMvc.perform(put("/datev/v1/encounter/"+ id +"/"+ userid +"/move"))
+            mockMvc.perform(put("/datev/v1/encounter/"+ id +"/user/"+ userid +"/move"))
                     .andExpect(status().isOk())
                     .andExpect(content().string(""));
         }
@@ -41,7 +41,7 @@ public class EncounterApiTest {
             String id = "Apfel";
             UUID userid = UUID.randomUUID();
 
-            mockMvc.perform(put("/datev/v1/encounter/"+ id +"/"+ userid +"/move"))
+            mockMvc.perform(put("/datev/v1/encounter/"+ id +"/user/"+ userid +"/move"))
                     .andExpect(status().isBadRequest()).andDo(print())
                     .andExpect(content().string("{\"details\":\"Invalid UUID string: Apfel\",\"message\":\"JSON parse error\"}"));
         }
@@ -51,7 +51,7 @@ public class EncounterApiTest {
             UUID id = UUID.randomUUID();
             UUID userid = UUID.randomUUID();
 
-            mockMvc.perform(post("/datev/v1/encounter/"+ id +"/"+ userid +"/move"))
+            mockMvc.perform(post("/datev/v1/encounter/"+ id +"/user/"+ userid +"/move"))
                     .andExpect(status().isMethodNotAllowed());
         }
     }
