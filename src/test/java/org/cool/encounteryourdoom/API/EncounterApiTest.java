@@ -1,21 +1,19 @@
-package org.cool.encounteryourdoom.Controller;
+package org.cool.encounteryourdoom.API;
 
+import org.cool.encounteryourdoom.Controller.EncounterController;
 import org.cool.encounteryourdoom.Service.EncounterService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.openapitools.model.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,9 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class EncounterApiTest {
 
+	@MockitoBean
+	EncounterController EncounterController;
+
 	@Autowired
 	private MockMvc mockMvc;
-	private EncounterService encounterService; // Service wird gemockt
 
 	@Nested
 	class MoveEncounter {
@@ -38,7 +38,7 @@ public class EncounterApiTest {
 			UUID id = UUID.randomUUID();
 			UUID userid = UUID.randomUUID();
 
-			mockMvc.perform(put("/datev/v1/encounter/" + id + "/" + userid + "/move"))
+			mockMvc.perform(put("/datev/v1/encounter/" + id + "/user/" + userid + "/move"))
 					.andExpect(status().isOk())
 					.andExpect(content().string(""));
 		}
@@ -48,7 +48,7 @@ public class EncounterApiTest {
 			String id = "Apfel";
 			UUID userid = UUID.randomUUID();
 
-			mockMvc.perform(put("/datev/v1/encounter/" + id + "/" + userid + "/move"))
+			mockMvc.perform(put("/datev/v1/encounter/" + id + "/user/" + userid + "/move"))
 					.andExpect(status().isBadRequest()).andDo(print())
 					.andExpect(content().string("{\"details\":\"Invalid UUID string: Apfel\",\"message\":\"JSON parse error\"}"));
 		}
@@ -58,7 +58,7 @@ public class EncounterApiTest {
 			UUID id = UUID.randomUUID();
 			UUID userid = UUID.randomUUID();
 
-			mockMvc.perform(post("/datev/v1/encounter/" + id + "/" + userid + "/move"))
+			mockMvc.perform(post("/datev/v1/encounter/" + id + "/user/" + userid + "/move"))
 					.andExpect(status().isMethodNotAllowed());
 		}
 	}
@@ -72,8 +72,8 @@ public class EncounterApiTest {
 		}
 
 		@Test
-		void shouldReturn405MethodNotAllowedWhenUsingGet() throws Exception {
-			mockMvc.perform(put("/datev/v1/encounter/all"))
+		void shouldReturn405MethodNotAllowedWhenUsingPut() throws Exception {
+			mockMvc.perform(put("/datev/v1/encounter"))
 					.andExpect(status().isMethodNotAllowed());
 		}
 
@@ -107,7 +107,7 @@ public class EncounterApiTest {
 		@Test
 		void shouldReturn405MethodNotAllowedWhenUsingDelete() throws Exception {
 			UUID id = UUID.randomUUID();
-			mockMvc.perform(put("/datev/v1/encounter/" + id))
+			mockMvc.perform(delete("/datev/v1/encounter/" + id))
 					.andExpect(status().isMethodNotAllowed());
 		}
 
@@ -126,21 +126,9 @@ public class EncounterApiTest {
 //ToDO: anderes Mocking mit when einbauen (ABER NUR CONTROLLER, Service nicht erwähnen)
 // Wie in Marcels Beispiel
 // ACHTUNG: Es müssen bei Bedarf Interfaces gemockt werden, keine konkreten Klassen!
-			EncounterService encounterService = Mockito.mock(EncounterService.class);
-			doNothing().when(encounterService).updateEncounter(any(UUID.class), any());
-
-
-			EncounterController controller = new EncounterController(encounterService);
-			MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
 			UUID id = UUID.randomUUID();
-			String encounterJson = "{" +
-					"\"name\":\"Test Encounter\"," +
-					"\"description\":\"Testfall\"," +
-					"\"difficultyLevel\": \"Easy\"" +
-					"}";
-
-			mockMvc.perform(put("/datev/v1/encounter/" + id + "/edit")
+			String encounterJson = "{\"name\":\"Test Encounter\",\"description\":\"Testfall\",\"difficultyLevel\":\"Hard\"}";
+			mockMvc.perform(put("/datev/v1/encounter/" + id)
 							.contentType(MediaType.APPLICATION_JSON)
 							.content(encounterJson))
 					.andExpect(status().isOk());
@@ -150,7 +138,7 @@ public class EncounterApiTest {
 		void shouldReturn400BadRequestWhenUpdatingWithInvalidId() throws Exception {
 			String id = "Apfel";
 			String encounterJson = "{\"name\":\"Test Encounter\",\"description\":\"Test\",\"difficultyLevel\":null}";
-			mockMvc.perform(put("/datev/v1/encounter/" + id + "/edit")
+			mockMvc.perform(put("/datev/v1/encounter/" + id)
 							.contentType("application/json")
 							.content(encounterJson))
 					.andExpect(status().isBadRequest());
@@ -160,15 +148,15 @@ public class EncounterApiTest {
 		void shouldReturn415UnsupportedMediaTypeWhenNoContentType() throws Exception {
 			UUID id = UUID.randomUUID();
 			String encounterJson = "{\"name\":\"Test Encounter\",\"description\":\"Test\"}";
-			mockMvc.perform(put("/datev/v1/encounter/" + id + "/edit")
+			mockMvc.perform(put("/datev/v1/encounter/" + id)
 							.content(encounterJson))
 					.andExpect(status().isUnsupportedMediaType());
 		}
 
 		@Test
-		void shouldReturn405MethodNotAllowedWhenUsingGet() throws Exception {
+		void shouldReturn405MethodNotAllowedWhenUsingDelete() throws Exception {
 			UUID id = UUID.randomUUID();
-			mockMvc.perform(get("/datev/v1/encounter/" + id + "/edit"))
+			mockMvc.perform(delete("/datev/v1/encounter/" + id))
 					.andExpect(status().isMethodNotAllowed());
 		}
 	}
