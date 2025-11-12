@@ -41,7 +41,7 @@ public class UserController implements UserApi {
 		emptyUser.setId(MongoID);
 		this.userRepository.save(emptyUser);
 
-		URI location = URI.create(String.format("/datev/v1/users/%s", response.toString()));
+		URI location = URI.create(String.format("/datev/v1/users/%s", response));
 		return ResponseEntity.created(location).build();
 	}
 

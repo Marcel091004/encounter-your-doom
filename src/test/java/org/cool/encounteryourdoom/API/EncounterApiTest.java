@@ -1,7 +1,6 @@
 package org.cool.encounteryourdoom.API;
 
 import org.cool.encounteryourdoom.Controller.EncounterController;
-import org.cool.encounteryourdoom.Service.EncounterService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.Region;
@@ -157,4 +156,70 @@ public class EncounterApiTest {
 					.andExpect(status().isMethodNotAllowed());
 		}
 	}
+
+	@Nested
+	class CreateEncounter {
+		@Test
+		void shouldReturn201CreatedWhenCreatingEncounter() throws Exception {
+			String encounterJson = "{\"name\":\"New Encounter\",\"description\":\"A newly created encounter.\",\"difficultyLevel\":\"Medium\"}";
+			mockMvc.perform(post("/datev/v1/encounter")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(encounterJson))
+					.andExpect(status().isCreated());
+		}
+
+		@Test
+		void shouldReturn415UnsupportedMediaTypeWhenNoContentType() throws Exception {
+			String encounterJson = "{\"name\":\"New Encounter\",\"description\":\"A newly created encounter.\"}";
+			mockMvc.perform(post("/datev/v1/encounter")
+							.content(encounterJson))
+					.andExpect(status().isUnsupportedMediaType());
+		}
+
+		@Test
+		void shouldReturn405MethodNotAllowedWhenUsingDelete() throws Exception {
+			mockMvc.perform(delete("/datev/v1/encounter"))
+					.andExpect(status().isMethodNotAllowed());
+		}
+
+		@Test
+		void shouldReturn400BadRequestWhenCreatingEncounterWithInvalidData() throws Exception {
+			String encounterJson = "{\"name\":\"\",\"description\":\"A newly created encounter.\"}";
+			mockMvc.perform(post("/datev/v1/encounter")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(encounterJson))
+					.andExpect(status().isBadRequest());
+		}
+	}
+
+	@Nested
+	class GetRandomEncounter {
+		@Test
+		void shouldReturn200OKWhenGettingRandomEncounter() throws Exception {
+			mockMvc.perform(get("/datev/v1/encounter/random"))
+					.andExpect(status().isOk());
+		}
+
+		@Test
+		void shouldReturn200OKWhenGettingRandomEncounterWithFilters() throws Exception {
+			mockMvc.perform(get("/datev/v1/encounter/random")
+							.param("Region", Region.DESERT.toString())
+							.param("Rarity", "rare"))
+					.andExpect(status().isOk());
+		}
+
+		@Test
+		void shouldReturn405MethodNotAllowedWhenUsingPost() throws Exception {
+			mockMvc.perform(post("/datev/v1/encounter/random"))
+					.andExpect(status().isMethodNotAllowed());
+		}
+
+		@Test
+		void shouldReturn400BadRequestWhenUsingInvalidFilter() throws Exception {
+			mockMvc.perform(get("/datev/v1/encounter/random")
+							.param("Region", "Apfel"))
+					.andExpect(status().isBadRequest());
+		}
+	}
+
 }

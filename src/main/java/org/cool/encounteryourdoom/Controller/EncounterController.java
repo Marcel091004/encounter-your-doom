@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,9 +58,9 @@ public class EncounterController implements EncounterApi {
 
 	@Override
 	public ResponseEntity<Void> createEncounter(Encounter encounter) {
-		//TODO this is not yet implemented
-		Void response = null;
-		return ResponseEntity.ok(response);
+		encounterService.createEncounter(encounter);
+		URI location = URI.create(String.format("/datev/v1/encounter/%s", UUID.randomUUID()));
+		return ResponseEntity.created(location).build();
 	}
 
 	@Override
