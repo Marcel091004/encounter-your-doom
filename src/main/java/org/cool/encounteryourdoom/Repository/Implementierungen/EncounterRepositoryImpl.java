@@ -5,8 +5,11 @@ import org.cool.encounteryourdoom.Repository.Interfaces.EncounterRepositoryInter
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EncounterRepositoryImpl implements EncounterRepositoryInterface {
@@ -17,28 +20,38 @@ public class EncounterRepositoryImpl implements EncounterRepositoryInterface {
 		this.mongoTemplate = mongoTemplate;
 	}
 
+
 	@Override
 	public List<EncounterEntity> findEncountersByFilters(EncounterParameterFilter filter) {
-		Query query = new Query();
-		Criteria criteria = new Criteria();
+	    Query query = new Query();
+	    List<Criteria> criteriaList = new ArrayList<>();
 
-		if (filter != null) {
-			if (filter.getRegion() != null) {
-				criteria = criteria.and("region").is(filter.getRegion());
-			}
-			if (filter.getRarity() != null) {
-				criteria = criteria.and("rarity").is(filter.getRarity());
-			}
-			if (filter.getDifficultyLevel() != null) {
-				criteria = criteria.and("difficultyLevel").is(filter.getDifficultyLevel());
-			}
-			if (filter.getPartyLevel() != null) {
-				criteria = criteria.and("partyLevel").is(filter.getPartyLevel());
-			}
-			query.addCriteria(criteria);
-			return mongoTemplate.find(query, EncounterEntity.class);
-		}
+	    if (filter != null) {
+	        if (filter.getRegion() != null) {
+				System.out.println("Filtering by region: " + filter.getRegion());
+				System.out.println(Criteria.where("region").is(filter.getRegion()));
+	            criteriaList.add(Criteria.where("region").is(filter.getRegion()));
+	        }
+	        if (filter.getRarity() != null) {
+	            criteriaList.add(Criteria.where("rarity").is(filter.getRarity()));
+	        }
+	        if (filter.getDifficultyLevel() != null) {
+	            criteriaList.add(Criteria.where("difficultyLevel").is(filter.getDifficultyLevel()));
+	        }
+	        if (filter.getPartyLevel() != null) {
+	            criteriaList.add(Criteria.where("partyLevel").is(filter.getPartyLevel()));
+	        }
+	        if (criteriaList.isEmpty()) {
+				System.out.println("No filters applied, returning all encounters.");
+				query = new Query();
+	        }
 
-		return List.of();
+			criteriaList.forEach(query::addCriteria);
+
+			System.out.println(query.getQueryObject());
+	        return mongoTemplate.find(query, EncounterEntity.class);
+	    }
+
+	    return List.of();
 	}
 }

@@ -696,7 +696,7 @@ components:
             type: string
             format: uuid
           description: "List of creatures involved in the encounter."
-        environment:
+        region:
           $ref: '#/components/schemas/Region'
         partyLevel:
           type: integer
