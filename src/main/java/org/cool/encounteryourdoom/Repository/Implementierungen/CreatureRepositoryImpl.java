@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -23,23 +24,28 @@ public class CreatureRepositoryImpl implements CreatureRepositoryInterface {
     @Override
     public List<CreatureEntity> findCreaturesByFilters(CreatureParameterFilter filter) {
         Query query = new Query();
-        Criteria criteria = new Criteria();
+        List<Criteria> criteriaList = new ArrayList<>();
 
         if (filter != null) {
             if (filter.getRegion() != null) {
-                criteria = criteria.and("region").is(filter.getRegion());
+                criteriaList.add(Criteria.where("region").is(filter.getRegion()));
             }
             if (filter.getRarity() != null) {
-                criteria = criteria.and("rarity").is(filter.getRarity());
+                criteriaList.add(Criteria.where("rarity").is(filter.getRarity()));
             }
             if (filter.getCr() != null && !filter.getCr().isEmpty()) {
-                criteria = criteria.and("CR").is(filter.getCr());
+                criteriaList.add(Criteria.where("cr").is(filter.getCr()));
             }
             if (filter.getUuid() != null) {
-                criteria = criteria.and("uuid").is(filter.getUuid());
+                criteriaList.add(Criteria.where("uuid").is(filter.getUuid()));
+            }
+            if (criteriaList.isEmpty()) {
+                System.out.println("No filters applied, returning all encounters.");
+                query = new Query();
             }
         }
-        query.addCriteria(criteria);
+
+        criteriaList.forEach(query::addCriteria);
         return mongoTemplate.find(query, CreatureEntity.class);
     }
 

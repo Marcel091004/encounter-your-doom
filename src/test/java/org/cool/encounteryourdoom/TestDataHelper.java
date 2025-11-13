@@ -1,5 +1,7 @@
 package org.cool.encounteryourdoom;
 
+import java.util.List;
+
 public class TestDataHelper {
 
 
@@ -34,6 +36,122 @@ public class TestDataHelper {
                           }
                         
                         """;
+    }
+
+    public static List<String> getListOfCreatureJson(){
+        return List.of("""
+                        {
+                            "Id": "550e8400-e29b-41d4-a716-446655440000",
+                            "initiative": 12,
+                            "name": "Phantasmasaurus",
+                            "HP": 222,
+                            "AC": 21,
+                            "CreatureDescription": "Beschreibung...",
+                            "statBlock": {
+                              "Str": 5,
+                              "Dex": 5,
+                              "Con": 5,
+                              "Int": 5,
+                              "Wis": 5,
+                              "Cha": 5
+                            },
+                            "statusEffects": ["Invisible", "Frightened"],
+                            "resistances": ["Fire", "Psychic"],
+                            "immunities": ["Poison"],
+                            "weaknesses": ["Cold"],
+                            "region": ["Forest"],
+                            "rarity": ["Legendary"],
+                            "cr": "18",
+                            "Speed": 30,
+                            "traits": ["Dimensional Gate", "Rainbow Breath", "Mind Shield"],
+                            "attack": []
+                          }
+                        
+                        """,
+                """
+                        {
+                            "Id": "660e8400-e29b-41d4-a716-446655440000",
+                            "initiative": 15,
+                            "name": "Goblin",
+                            "HP": 30,
+                            "AC": 15,
+                            "CreatureDescription": "A small, green humanoid.",
+                            "statBlock": {
+                              "Str": 8,
+                              "Dex": 14,
+                              "Con": 10,
+                              "Int": 10,
+                              "Wis": 8,
+                              "Cha": 8
+                            },
+                            "statusEffects": [],
+                            "resistances": [],
+                            "immunities": [],
+                            "weaknesses": [],
+                            "region": ["Arctic"],
+                            "rarity": ["Common"],
+                            "cr": "1/4",
+                            "Speed": 30,
+                            "traits": ["Nimble Escape"],
+                            "attack": []
+                          }
+                        """,
+                """
+                        {
+                            "Id": "770e8400-e29b-41d4-a716-446655440000",
+                            "initiative": 20,
+                            "name": "Dragon",
+                            "HP": 300,
+                            "AC": 19,
+                            "CreatureDescription": "A large, fire-breathing reptile.",
+                            "statBlock": {
+                              "Str": 23,
+                              "Dex": 10,
+                              "Con": 21,
+                              "Int": 16,
+                              "Wis": 13,
+                              "Cha": 19
+                            },
+                            "statusEffects": [],
+                            "resistances": ["Fire"],
+                            "immunities": [],
+                            "weaknesses": [],
+                            "region": ["Mountain"],
+                            "rarity": ["Rare"],
+                            "cr": "10",
+                            "Speed": 40,
+                            "traits": ["Fire Breath", "Legendary Resistance"],
+                            "attack": []
+                          }
+                        """,
+                """
+                        {
+                            "Id": "770e8400-e29b-41d4-a716-446655440001",
+                            "initiative": 30,
+                            "name": "Blue Dragon",
+                            "HP": 250,
+                            "AC": 19,
+                            "CreatureDescription": "A large, steaming-hot-water-breathing reptile.",
+                            "statBlock": {
+                              "Str": 23,
+                              "Dex": 10,
+                              "Con": 21,
+                              "Int": 16,
+                              "Wis": 13,
+                              "Cha": 19
+                            },
+                            "statusEffects": [],
+                            "resistances": ["Fire"],
+                            "immunities": [],
+                            "weaknesses": [],
+                            "region": ["Mountain"],
+                            "rarity": ["Rare"],
+                            "cr": "10",
+                            "Speed": 40,
+                            "traits": ["Fire Breath", "Legendary Resistance"],
+                            "attack": []
+                          }
+                        """);
     }
 
     public static String getBrokenCreatureJson(){

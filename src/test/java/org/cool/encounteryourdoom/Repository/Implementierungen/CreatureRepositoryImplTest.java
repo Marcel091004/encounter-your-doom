@@ -89,6 +89,6 @@ class CreatureRepositoryImplTest {
 		ArgumentCaptor<Query> queryCaptor = ArgumentCaptor.forClass(Query.class);
 		verify(mongoTemplate).find(queryCaptor.capture(), eq(CreatureEntity.class));
 
-		assertEquals("10", queryCaptor.getValue().getQueryObject().get("CR"));
+		assertEquals("10", queryCaptor.getValue().getQueryObject().get("cr"));
 	}
 }
