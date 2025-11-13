@@ -1,6 +1,7 @@
 package org.cool.encounteryourdoom.API;
 
 import org.cool.encounteryourdoom.Controller.CreatureController;
+import org.cool.encounteryourdoom.TestDataHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static org.cool.encounteryourdoom.TestDataHelper.getCreatureJson;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -336,52 +339,15 @@ public class CreatureApiTest {
         void shouldReturn201CreatedWhenEverythingIsInOrder() throws Exception {
 
             UUID creatureId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
-            Creature testCreature = new Creature()
-                    .id(creatureId)
-                    .name("Shadow Wolf")
-                    .creatureDescription("A mystical wolf wreathed in shadows, prowling the dark forests.")
-                    .cr("3")
-                    .HP(45)
-                    .AC(14)
-                    .speed(50)
-                    .initiative(2)
-                    .statBlock(new StatBlock()
-                            .str(2)
-                            .dex(2)
-                            .con(1)
-                            ._int(0)
-                            .wis(1)
-                            .cha(-1))
-                    .attack(Arrays.asList(
-                            new Attack()
-                                    .name("Bite")
-                                    .description("A powerful bite attack")
-                                    .attackBonus(5)
-                                    .damage("2d6 + 2 piercing")
-                                    .damageType(List.of(DamageTypes.PIERCING)),
-                            new Attack()
-                                    .name("Shadow Strike")
-                                    .description("Strikes from the shadows")
-                                    .attackBonus(4)
-                                    .damage("1d8 + 2 necrotic")
-                                    .damageType(List.of(DamageTypes.NECROTIC))))
-                    .traits(Arrays.asList("Darkvision 60ft", "Shadow Stealth"))
-                    //TODO Region shouldn´t be a List (Wald Kobold, Berg Kobold etc)
-                    .region(List.of(Region.FOREST))
-                    //TODO Rarity shouldn't be a List
-                    .rarity(List.of(Rarity.UNCOMMON))
-                    .resistances(List.of(DamageTypes.NECROTIC))
-                    .immunities(Collections.emptyList())
-                    .weaknesses(List.of(DamageTypes.RADIANT))
-                    .statusEffects(Collections.emptyList());
+
 
             URI location = URI.create("/datev/v1/creature/" + creatureId);
 
-            when(CreatureController.createCreature(testCreature)).thenReturn(ResponseEntity.created(location).build());
+            when(CreatureController.createCreature(any(Creature.class))).thenReturn(ResponseEntity.created(location).build());
 
             MvcResult result = mockMvc.perform(post("/datev/v1/creature/" + creatureId)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(testCreature)))
+                            .content(getCreatureJson()))
                     .andExpect(status().isCreated())
                     .andExpect(header().exists("Location")).andReturn();
 

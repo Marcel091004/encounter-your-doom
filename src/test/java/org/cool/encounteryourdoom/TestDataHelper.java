@@ -3,7 +3,7 @@ package org.cool.encounteryourdoom;
 public class TestDataHelper {
 
 
-    static String getCreatureJson(){
+    public static String getCreatureJson(){
         return
                 """
                         {
@@ -52,7 +52,7 @@ public class TestDataHelper {
                         """;
     }
 
-    static String getBrokenCreatureJson(){
+    public static String getBrokenCreatureJson(){
         return
                 """
                         {
@@ -101,7 +101,7 @@ public class TestDataHelper {
                         """;
     }
 
-    static String getEncounterJson(){
+    public static String getEncounterJson(){
         return
                 """
                         {
@@ -119,7 +119,7 @@ public class TestDataHelper {
                         """;
     }
 
-    static String getBrokenEncounterJson(){
+    public static String getBrokenEncounterJson(){
         return
                 """
                         {
