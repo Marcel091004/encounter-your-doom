@@ -20,7 +20,7 @@ public class CreatureController implements CreatureApi {
 
     private final CreatureService creatureService;
 
-    CreatureController(CreatureService creatureService) {
+    public CreatureController(CreatureService creatureService) {
         this.creatureService = creatureService;
     }
 
