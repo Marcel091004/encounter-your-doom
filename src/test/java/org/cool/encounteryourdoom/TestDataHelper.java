@@ -7,48 +7,32 @@ public class TestDataHelper {
         return
                 """
                         {
-                          "id": "b7a9c1e2-4f3d-4e2a-9c1b-7a9c1e24f3d4",
-                          "initiative": 12,
-                          "name": "Phantasmasaurus",
-                          "HP": 222,
-                          "AC": 21,
-                          "creatureDescription": "A shimmering, ethereal being that wanders between dimensions, leaving rainbows with every step.",
-                          "statBlock": {
-                            "strength": 18,
-                            "dexterity": 22,
-                            "constitution": 16,
-                            "intelligence": 14,
-                            "wisdom": 20,
-                            "charisma": 25
-                          },
-                          "statusEffects": [
-                            "Invisible",
-                            "Frightened"
-                          ],
-                          "resistances": [
-                            "Fire",
-                            "Psychic"
-                          ],
-                          "immunities": [
-                            "Poison"
-                          ],
-                          "weaknesses": [
-                            "Cold"
-                          ],
-                          "region": [
-                            "Forest"
-                          ],
-                          "rarity": [
-                           "Legendary"
-                          ],
-                          "cr": "18",
-                          "speed": 60,
-                          "traits": [
-                            "Dimensional Gate",
-                            "Rainbow Breath",
-                            "Mind Shield"
-                          ]
-                        }
+                            "Id": "550e8400-e29b-41d4-a716-446655440000",
+                            "initiative": 12,
+                            "name": "Phantasmasaurus",
+                            "HP": 222,
+                            "AC": 21,
+                            "CreatureDescription": "Beschreibung...",
+                            "statBlock": {
+                              "Str": 5,
+                              "Dex": 5,
+                              "Con": 5,
+                              "Int": 5,
+                              "Wis": 5,
+                              "Cha": 5
+                            },
+                            "statusEffects": ["Invisible", "Frightened"],
+                            "resistances": ["Fire", "Psychic"],
+                            "immunities": ["Poison"],
+                            "weaknesses": ["Cold"],
+                            "region": ["Forest"],
+                            "rarity": ["Legendary"],
+                            "cr": "18",
+                            "Speed": 30,
+                            "traits": ["Dimensional Gate", "Rainbow Breath", "Mind Shield"],
+                            "attack": []
+                          }
+                        
                         """;
     }
 
@@ -56,48 +40,32 @@ public class TestDataHelper {
         return
                 """
                         {
-                          "id": "b7a9c1e2-4f3d-4e2a-9c1b-7a9c1e24f3d4",
-                          "initiative": 12000,
-                          "name": "Phantasmasaurus",
-                          "HP": 100000000000000000000000000000,
-                          "AC": -50,
-                          "creatureDescription": "A shimmering, ethereal being that wanders between dimensions, leaving rainbows with every step.",
-                          "statBlock": {
-                            "strength": 18,
-                            "dexterity": 22,
-                            "constitution": 16,
-                            "intelligence": 14,
-                            "wisdom": 20,
-                            "charisma": 25
-                          },
-                          "statusEffects": [
-                            "Invisible",
-                            "Frightened"
-                          ],
-                          "resistances": [
-                            "Fire",
-                            "Psychic"
-                          ],
-                          "immunities": [
-                            "Poison"
-                          ],
-                          "weaknesses": [
-                            "Cold"
-                          ],
-                          "region": [
-                            "Forest"
-                          ],
-                          "rarity": [
-                           "Legendary"
-                          ],
-                          "cr": "500000",
-                          "speed": 60,
-                          "traits": [
-                            "Dimensional Gate",
-                            "Rainbow Breath",
-                            "Mind Shield"
-                          ]
-                        }
+                            "Id": "550e8400-e29b-41d4-a716-446655440000",
+                            "initiative": 56787657657,
+                            "name": "Phantasmasaurus",
+                            "HP": 100000000000000000000000000000000,
+                            "AC": -567656765765,
+                            "CreatureDescription": "Beschreibung...",
+                            "statBlock": {
+                              "Str": 40,
+                              "Dex": -789878789768768767876545677654678765587654,
+                              "Con": 5,
+                              "Int": 5,
+                              "Wis": 5,
+                              "Cha": 5
+                            },
+                            "statusEffects": ["Invisible", "Frightened"],
+                            "resistances": ["Fire", "Psychic"],
+                            "immunities": ["Poison"],
+                            "weaknesses": ["Cold"],
+                            "region": ["Forest"],
+                            "rarity": ["Legendary"],
+                            "cr": "4000000 Millionen",
+                            "Speed": 30,
+                            "traits": ["Dimensional Gate", "Rainbow Breath", "Mind Shield"],
+                            "attack": []
+                          }
+                        
                         """;
     }
 
