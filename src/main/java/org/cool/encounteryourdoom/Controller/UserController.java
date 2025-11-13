@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.Controller;
 
 import org.cool.encounteryourdoom.Repository.UserRepository;
-import org.cool.encounteryourdoom.model.privateEncounter;
+import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
 import org.openapitools.api.UserApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class UserController implements UserApi {
 			}
 		} while (!isUnique);
 
-		privateEncounter emptyUser = new privateEncounter();
+		PrivateEncounterEntity emptyUser = new PrivateEncounterEntity();
 
 		emptyUser.setUserId(response);
 		emptyUser.setId(MongoID);

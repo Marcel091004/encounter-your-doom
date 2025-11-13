@@ -19,8 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -88,13 +87,12 @@ public class EncounterApiTest {
 					.andExpect(status().isOk());
 		}
 
-		//TODO: Falsch implementierter Code, da ungültige Filterwerte nicht zu 400 führen
-//		@Test
-//		void shouldReturn400BadRequestWhenUsingInvalidFilter() throws Exception {
-//			mockMvc.perform(get("/datev/v1/encounter")
-//							.param("Region", "invalidCR"))
-//					.andExpect(status().isBadRequest());
-//		}
+		@Test
+		void shouldReturn400BadRequestWhenUsingInvalidFilter() throws Exception {
+			mockMvc.perform(get("/datev/v1/encounter")
+							.param("region", "invalidCR"))
+					.andExpect(status().isBadRequest());
+		}
 	}
 
 	@Nested
@@ -171,10 +169,13 @@ public class EncounterApiTest {
 			when(EncounterController.createEncounter(any())).thenReturn(ResponseEntity.created(location).build());
 
 			String encounterJson = "{\"name\":\"New Encounter\",\"description\":\"A newly created encounter.\",\"difficultyLevel\":\"Medium\"}";
+
 			mockMvc.perform(post("/datev/v1/encounter")
 							.contentType(MediaType.APPLICATION_JSON)
 							.content(encounterJson))
-					.andExpect(status().isCreated());
+					.andExpect(status().isCreated())
+					.andExpect(header().string("Location", location.toString()));
+			//TODO: Gültigkeit der UUID prüfen notwendig?
 		}
 
 		@Test
@@ -226,9 +227,10 @@ public class EncounterApiTest {
 		@Test
 		void shouldReturn400BadRequestWhenUsingInvalidFilter() throws Exception {
 			mockMvc.perform(get("/datev/v1/encounter/random")
-							.param("Region", "Apfel"))
+							.param("region", "Apfel"))
 					.andExpect(status().isBadRequest());
 		}
+
 	}
 
 }
