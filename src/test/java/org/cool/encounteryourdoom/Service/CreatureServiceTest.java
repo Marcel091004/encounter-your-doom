@@ -57,6 +57,7 @@ class CreatureServiceTest {
 	void getCreatureByID_shouldReturnNullIfNotFound() {
 		UUID id = UUID.randomUUID();
 		when(creatureRepository.findById(id)).thenReturn(Optional.empty());
+
 		when(creatureMapper.toCreature(null)).thenReturn(null);
 
 		Creature result = creatureService.getCreatureByID(id);

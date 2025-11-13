@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Document("privateEncounters")
-public class privateEncounter extends Encounter {
+@Document("privateEncounter")
+public class PrivateEncounterEntity extends Encounter {
 
     @MongoId
     private UUID id;

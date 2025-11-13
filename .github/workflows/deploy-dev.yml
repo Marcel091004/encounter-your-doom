@@ -26,8 +26,8 @@ on:
         type: string
 
 env:
-  MANIFEST_PATH: "manifest.yml" # ProFlows-Setup-TODO [MANIFEST_PATH] replace it with the path to the manifest file, for example: service1/manifest.yml
-  ICINGA_SERVICE: "" # ProFlows-Setup-TODO [ICINGA_SERVICE] set the name of the Icinga service, for example: icinga-service1
+  MANIFEST_PATH: "manifest.yml"
+  ICINGA_SERVICE: "" # ProFlows-Setup [ICINGA_SERVICE] set the name of the Icinga service, for example: icinga-service1
   VERSION: ${{ github.event.client_payload.publish.version || github.event.inputs.version }}
 
   # =================== If Vault is NOT used ==========================
@@ -39,8 +39,8 @@ env:
 
 jobs:
   deploy:
-    runs-on: cnrz # ProFlows-Setup-TODO [RUNS_ON] set cnrz (deploy in to CnRZ PaaS) or classic-rz (deploy in to Classic-RZ PaaS)
-    environment: dev # ProFlows-Setup-TODO [ENVIRONMENT] set the correct environment name, for example: dev-deployableServiceX
+    runs-on: cnrz # ProFlows-Setup [RUNS_ON] set cnrz (deploy in to CnRZ PaaS) or classic-rz (deploy in to Classic-RZ PaaS)
+    environment: dev # ProFlows-Setup [ENVIRONMENT] set the correct environment name, for example: dev-deployableServiceX
 
     # Changed to permissions: 'write-all' for compatibility, flexibility, and ease of customization.
     # Please update to stricter permissions if your workflow has specific security requirements.

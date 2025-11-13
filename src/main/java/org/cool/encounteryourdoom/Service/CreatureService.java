@@ -43,7 +43,6 @@ public class CreatureService {
 			newCreature.setId(oldCreature.getId());
 			this.creatureRepository.save(newCreature);
 		}
-		// Optional: else-Block für Fehlerbehandlung
 	}
 
 	public UUID createCreature(Creature creature) {

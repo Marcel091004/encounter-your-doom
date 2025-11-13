@@ -1,45 +1,47 @@
 package org.cool.encounteryourdoom.Controller;
 
-import org.cool.encounteryourdoom.MongoDBTestContainer;
-import org.cool.encounteryourdoom.Repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
+import org.cool.encounteryourdoom.Service.UserService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.context.ImportTestcontainers;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@Testcontainers
-@ImportTestcontainers(MongoDBTestContainer.class)
 @AutoConfigureMockMvc
-class UserControllerTest {
+public class UserControllerTest {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private MockMvc mockMvc;
 
-    @Test
-    void testGenerateUserId() throws Exception {
-       MvcResult result = mockMvc.perform(post("/user/generation"))
-                .andExpect(status().isOk()).andReturn();
+    @MockitoBean
+    UserService userService;
 
-       String body = result.getResponse().getContentAsString();
-       body = body.replace("\"", ""); // "" machen den UUID String kaputt
-       UUID userId = UUID.fromString(body);
+    @Nested
+    class User {
 
-       Assertions.assertNotNull(userId);
-       Assertions.assertFalse(userRepository.findAllByUserId(userId).isEmpty());
+        @Test
+        void shouldReturn200kWithNewUserId() {
 
+            UUID userId = UUID.randomUUID();
+
+            when(userService.getUniqueUserID()).thenReturn(userId);
+            doNothing().when(userService).addUser(any(UUID.class));
+
+            UserController userController = new UserController(userService);
+
+            ResponseEntity<UUID> response = userController.generateUserId();
+            ResponseEntity<UUID> responseWeExpect = ResponseEntity.ok(userId);
+
+            assertEquals(response, responseWeExpect);
+
+        }
     }
 }

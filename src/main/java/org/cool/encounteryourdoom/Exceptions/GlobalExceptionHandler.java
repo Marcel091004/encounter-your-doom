@@ -15,13 +15,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	//TODO is a dumb example so i remember the syntax but we actually need to implement proper exception handling
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Void> handleAllExceptions(Exception ex) {
-		System.err.println("An error occurred: " + ex.getMessage());
-		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 	@ExceptionHandler(BindException.class)
 	public ResponseEntity<Map<String, Object>> handleValidationExceptions(BindException ex) {
 		List<String> errors = ex.getBindingResult()

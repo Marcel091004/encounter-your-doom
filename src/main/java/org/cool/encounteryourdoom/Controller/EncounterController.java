@@ -8,12 +8,15 @@ import org.openapitools.model.Encounter;
 import org.openapitools.model.Rarity;
 import org.openapitools.model.Region;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/datev/v1")
 public class EncounterController implements EncounterApi {
 
 	private final EncounterService encounterService;
@@ -25,12 +28,15 @@ public class EncounterController implements EncounterApi {
 	@Override
 	public ResponseEntity<List<Encounter>> getAllPublicEncounters(Region region, Rarity rarity, DifficultyLevel difficultyLevel, Integer partyLevel) {
 
+		System.out.println("Filter parameters in Controller: " + region + rarity + difficultyLevel + partyLevel);
+
 		EncounterParameterFilter filter = new EncounterParameterFilter();
 		filter.setRegion(region);
 		filter.setRarity(rarity);
 		filter.setDifficultyLevel(difficultyLevel);
 		filter.setPartyLevel(partyLevel);
 
+		System.out.println("Filter in Controller: " + filter.getRegion() + filter.getRarity() + filter.getDifficultyLevel() + filter.getPartyLevel());
 		List<Encounter> encounters = encounterService.getAllPublicEncounters(filter);
 		return ResponseEntity.ok(encounters);
 	}
@@ -49,14 +55,14 @@ public class EncounterController implements EncounterApi {
 
 	@Override
 	public ResponseEntity<Void> moveEncounterToUserSpace(UUID id, UUID userId) {
-		//TODO this is not yet implemented
+		encounterService.moveEncounterToUserSpace(id, userId);
 		return ResponseEntity.ok().build();
 	}
 
 	@Override
-	public ResponseEntity<UUID> createNewEncounter(Encounter encounter) {
-		UUID response = encounterService.createEncounter(encounter);
-		return ResponseEntity.ok(response);
+	public ResponseEntity<Void> createEncounter(Encounter encounter) {
+		URI location = URI.create(String.format("/datev/v1/encounter/%s", encounterService.createEncounter(encounter)));
+		return ResponseEntity.created(location).build();
 	}
 
 	@Override

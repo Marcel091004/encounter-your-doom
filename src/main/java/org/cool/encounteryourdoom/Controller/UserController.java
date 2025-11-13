@@ -1,45 +1,35 @@
 package org.cool.encounteryourdoom.Controller;
 
 import org.cool.encounteryourdoom.Repository.UserRepository;
-import org.cool.encounteryourdoom.model.privateEncounter;
+import org.cool.encounteryourdoom.Service.UserService;
+import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
 import org.openapitools.api.UserApi;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/datev/v1")
 public class UserController implements UserApi {
 
-    private final UserRepository userRepository;
+	private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
+
 
     @Override
-    public ResponseEntity<UUID> generateUserId() {
+	public ResponseEntity<UUID> generateUserId() {
 
-        boolean isUnique = false;
-        UUID response;
-        UUID MongoID;
+	    UUID response = userService.getUniqueUserID();
+        userService.addUser(response);
 
-        do {
-            MongoID = UUID.randomUUID();
-             response = UUID.randomUUID();
-            if(this.userRepository.findAllByUserId(response).isEmpty() && this.userRepository.findById(MongoID).isEmpty()) {
-                isUnique = true;
-            }
-        }while (!isUnique);
-
-        privateEncounter emptyUser = new privateEncounter();
-
-        emptyUser.setUserId(response);
-        emptyUser.setId(MongoID);
-        this.userRepository.save(emptyUser);
-
-    return ResponseEntity.ok(response);
-    }
+		return ResponseEntity.ok(response);
+	}
 
 
 }
