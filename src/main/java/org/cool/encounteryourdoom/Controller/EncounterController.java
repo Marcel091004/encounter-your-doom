@@ -61,8 +61,7 @@ public class EncounterController implements EncounterApi {
 
 	@Override
 	public ResponseEntity<Void> createEncounter(Encounter encounter) {
-		encounterService.createEncounter(encounter);
-		URI location = URI.create(String.format("/datev/v1/encounter/%s", UUID.randomUUID()));
+		URI location = URI.create(String.format("/datev/v1/encounter/%s", encounterService.createEncounter(encounter)));
 		return ResponseEntity.created(location).build();
 	}
 

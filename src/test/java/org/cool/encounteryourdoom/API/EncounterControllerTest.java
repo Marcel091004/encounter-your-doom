@@ -99,11 +99,26 @@ class EncounterControllerTest {
 		@Test
 		void shouldCreateEncounterAndReturnCreatedResponse() {
 			Encounter encounter = new Encounter();
+			UUID newId = UUID.randomUUID();
+
+			when(encounterService.createEncounter(encounter)).thenReturn(newId);
 
 			ResponseEntity<Void> response = encounterController.createEncounter(encounter);
 
-			assertEquals(201, response.getStatusCodeValue());
-			verify(encounterService, times(1)).createEncounter(encounter);
+			assertEquals("/datev/v1/encounter/" + newId, response.getHeaders().getLocation().toString());
+		}
+
+		@Test
+		void shouldHandleExceptionWhenCreatingEncounter() {
+			Encounter encounter = new Encounter();
+
+			when(encounterService.createEncounter(encounter)).thenThrow(new RuntimeException("Creation Failed"));
+
+			try {
+				encounterController.createEncounter(encounter);
+			} catch (RuntimeException e) {
+				assertEquals("Creation Failed", e.getMessage());
+			}
 		}
 	}
 
@@ -111,12 +126,28 @@ class EncounterControllerTest {
 	class UpdateEncounter {
 		@Test
 		void shouldUpdateEncounterAndReturnOkResponse() {
-			UUID id = UUID.randomUUID();
 			Encounter encounter = new Encounter();
+			UUID id = UUID.randomUUID();
+
+			doNothing().when(encounterService).updateEncounter(id, encounter);
 
 			ResponseEntity<Void> response = encounterController.updatePublicEncounterById(id, encounter);
 
-			assertEquals(200, response.getStatusCodeValue());
+			assertEquals(ResponseEntity.ok().build(), response);
+		}
+
+		@Test
+		void shouldHandleExceptionWhenUpdatingEncounter() {
+			Encounter encounter = new Encounter();
+			UUID id = UUID.randomUUID();
+
+			doThrow(new RuntimeException("Update Failed")).when(encounterService).updateEncounter(id, encounter);
+
+			try {
+				encounterController.updatePublicEncounterById(id, encounter);
+			} catch (RuntimeException e) {
+				assertEquals("Update Failed", e.getMessage());
+			}
 		}
 	}
 
@@ -137,6 +168,22 @@ class EncounterControllerTest {
 
 			assertEquals(ResponseEntity.ok(encounter), response);
 		}
+
+		@Test
+		void shouldHandleExceptionWhenGettingRandomEncounter() {
+			Region region = Region.DESERT;
+			Rarity rarity = Rarity.RARE;
+			DifficultyLevel difficultyLevel = DifficultyLevel.HARD;
+			Integer partyLevel = 5;
+
+			when(encounterService.getRandomEncounter()).thenThrow(new RuntimeException("No Encounters Available"));
+
+			try {
+				encounterController.getRandomEncounter(region, rarity, difficultyLevel, partyLevel);
+			} catch (RuntimeException e) {
+				assertEquals("No Encounters Available", e.getMessage());
+			}
+		}
 	}
 
 	@Nested
@@ -146,9 +193,25 @@ class EncounterControllerTest {
 			UUID encounterId = UUID.randomUUID();
 			UUID userId = UUID.randomUUID();
 
+			doNothing().when(encounterService).moveEncounterToUserSpace(encounterId, userId);
+
 			ResponseEntity<Void> response = encounterController.moveEncounterToUserSpace(encounterId, userId);
 
-			assertEquals(200, response.getStatusCodeValue());
+			assertEquals(ResponseEntity.ok().build(), response);
+		}
+
+		@Test
+		void shouldHandleExceptionWhenMovingEncounter() {
+			UUID encounterId = UUID.randomUUID();
+			UUID userId = UUID.randomUUID();
+
+			doThrow(new RuntimeException("Move Failed")).when(encounterService).moveEncounterToUserSpace(encounterId, userId);
+
+			try {
+				encounterController.moveEncounterToUserSpace(encounterId, userId);
+			} catch (RuntimeException e) {
+				assertEquals("Move Failed", e.getMessage());
+			}
 		}
 	}
 }

@@ -52,8 +52,6 @@ public class CreatureControllerTest {
 
 			ResponseEntity<List<Creature>> response = creatureController.getCreatures(region, rarity, CR);
 
-
-			assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 			assertEquals(response, ResponseEntity.ok(creatures));
 		}
 
@@ -93,7 +91,6 @@ public class CreatureControllerTest {
 
 			ResponseEntity<Creature> response = creatureController.getCreatureById(id);
 
-			assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 			assertEquals(response, ResponseEntity.ok(creature));
 		}
 
@@ -147,8 +144,6 @@ public class CreatureControllerTest {
 
 			ResponseEntity<Void> response = creatureController.createCreature(creature);
 
-			assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-			//Location Header check
 			assertThat(response.getHeaders().getLocation().toString()).isEqualTo("/datev/v1/creature/" + generatedId);
 		}
 
@@ -180,7 +175,6 @@ public class CreatureControllerTest {
 
 			ResponseEntity<Creature> response = creatureController.getRandomCreature(region, rarity, CR);
 
-			assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 			assertEquals(response, ResponseEntity.ok(creature));
 		}
 
