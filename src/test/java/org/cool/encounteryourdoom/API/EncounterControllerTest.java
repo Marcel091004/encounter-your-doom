@@ -93,5 +93,63 @@ class EncounterControllerTest {
 			}
 		}
 	}
+
+	@Nested
+	class CreateEncounter {
+		@Test
+		void shouldCreateEncounterAndReturnCreatedResponse() {
+			Encounter encounter = new Encounter();
+
+			ResponseEntity<Void> response = encounterController.createEncounter(encounter);
+
+			assertEquals(201, response.getStatusCodeValue());
+			verify(encounterService, times(1)).createEncounter(encounter);
+		}
+	}
+
+	@Nested
+	class UpdateEncounter {
+		@Test
+		void shouldUpdateEncounterAndReturnOkResponse() {
+			UUID id = UUID.randomUUID();
+			Encounter encounter = new Encounter();
+
+			ResponseEntity<Void> response = encounterController.updatePublicEncounterById(id, encounter);
+
+			assertEquals(200, response.getStatusCodeValue());
+		}
+	}
+
+	@Nested
+	class GetRandomEncounter {
+		@Test
+		void shouldReturnRandomEncounterWithFilter() {
+			Region region = Region.DESERT;
+			Rarity rarity = Rarity.RARE;
+			DifficultyLevel difficultyLevel = DifficultyLevel.HARD;
+			Integer partyLevel = 5;
+
+			Encounter encounter = new Encounter();
+
+			when(encounterService.getRandomEncounter()).thenReturn(encounter);
+
+			ResponseEntity<Encounter> response = encounterController.getRandomEncounter(region, rarity, difficultyLevel, partyLevel);
+
+			assertEquals(ResponseEntity.ok(encounter), response);
+		}
+	}
+
+	@Nested
+	class MoveEncounterToUserSpace {
+		@Test
+		void shouldReturnOkResponse() {
+			UUID encounterId = UUID.randomUUID();
+			UUID userId = UUID.randomUUID();
+
+			ResponseEntity<Void> response = encounterController.moveEncounterToUserSpace(encounterId, userId);
+
+			assertEquals(200, response.getStatusCodeValue());
+		}
+	}
 }
 
