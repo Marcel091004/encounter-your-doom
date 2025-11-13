@@ -1,11 +1,11 @@
 package org.cool.encounteryourdoom.API;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cool.encounteryourdoom.Controller.CreatureController;
-import org.cool.encounteryourdoom.TestDataHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.openapitools.model.*;
+import org.openapitools.model.Creature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,12 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,11 +42,10 @@ public class CreatureApiTest {
     private ObjectMapper objectMapper;
 
     @Nested
-    class getCreature {
+    class getCreatures {
 
         @Test
         void shouldReturn200OKWhenEverythingIsInOrder() throws Exception {
-
 
             Creature testCreature = objectMapper.readValue(getCreatureJson(), Creature.class);
 
@@ -68,6 +64,15 @@ public class CreatureApiTest {
             mockMvc.perform(get("/datev/v1/creature"))
                     .andExpect(status().isOk()).andDo(print())
                     .andExpect(content().json(objectMapper.writeValueAsString(List.of())));
+        }
+
+        @Test
+        void shouldReturn400BadRequestWhenAParameterIsWrong() throws Exception {
+
+            when(CreatureController.getCreatures(null, null, "apfel")).thenReturn(ResponseEntity.badRequest().build());
+
+            mockMvc.perform(get("/datev/v1/creature?cr=apfel"))
+                    .andExpect(status().isBadRequest());
         }
     }
 
@@ -90,7 +95,7 @@ public class CreatureApiTest {
 
         @Test
         void shouldReturn200OkWithEmptyArray() throws Exception {
-
+            //TODO kein leeres Array sondern 404?
             UUID creatureId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
 
             when(CreatureController.getCreatureById(creatureId)).thenReturn(ResponseEntity.ok(null));
@@ -141,10 +146,7 @@ public class CreatureApiTest {
 
             UUID creatureId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
 
-            mockMvc.perform(put("/datev/v1/creature/" + creatureId)
-                            .contentType(MediaType.APPLICATION_ATOM_XML)
-                            .content(""))
-                    .andExpect(status().isUnsupportedMediaType()).andDo(print());
+            mockMvc.perform(put("/datev/v1/creature/" + creatureId)).andExpect(status().isUnsupportedMediaType()).andDo(print());
         }
 
         @Test
@@ -188,5 +190,40 @@ public class CreatureApiTest {
 
             Assertions.assertNotNull(userId);
         }
+
+        @Test
+        void shouldReturn400BadRequestWhenCreatureIsBroken() throws Exception {
+
+           mockMvc.perform(post("/datev/v1/creature")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(getBrokenCreatureJson()))
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Nested
+    class getRandomCreature {
+
+        @Test
+        void shouldReturn200OKWithARandomCreature() throws Exception {
+
+            Creature testCreature = objectMapper.readValue(getCreatureJson(), Creature.class);
+
+            when(CreatureController.getRandomCreature(null, null, null)).thenReturn(ResponseEntity.ok(testCreature));
+
+            mockMvc.perform(get("/datev/v1/creature/random"))
+                    .andExpect(status().isOk()).andDo(print())
+                    .andExpect(content().json(getCreatureJson()));
+        }
+
+        @Test
+        void shouldReturn400BadRequestWhenParameterIsWrong() throws Exception {
+
+            when(CreatureController.getRandomCreature(null, null, "apfel")).thenReturn(ResponseEntity.badRequest().build());
+
+            mockMvc.perform(get("/datev/v1/creature/random?cr=apfel"))
+                    .andExpect(status().isBadRequest());
+        }
+
     }
 }

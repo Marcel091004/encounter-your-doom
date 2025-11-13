@@ -35,15 +35,14 @@ public class ComponentTest {
         @Test
         void callUserGenerationShouldReturnValidUserId() throws Exception {
             MvcResult result = mockMvc.perform(post("/datev/v1/user/generation"))
-                    .andExpect(status().isCreated()).andReturn();
+                    .andExpect(status().isOk())
+                    .andReturn();
 
-            String locationHeader = result.getResponse().getHeader("Location");
+            String contentAsString = result.getResponse().getContentAsString();
 
-            Assertions.assertNotNull(locationHeader);
-            locationHeader = locationHeader.replace("\"", "");
-            locationHeader = locationHeader.replace("/datev/v1/users/", "");
+            contentAsString = contentAsString.replace("\"", "");
 
-            UUID userId = UUID.fromString(locationHeader);
+            UUID userId = UUID.fromString(contentAsString);
 
             Assertions.assertNotNull(userId);
             Assertions.assertFalse(userRepository.findAllByUserId(userId).isEmpty());

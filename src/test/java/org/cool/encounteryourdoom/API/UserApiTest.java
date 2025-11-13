@@ -10,12 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.URI;
 import java.util.UUID;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,15 +31,17 @@ public class UserApiTest {
 	@Nested
 	class userGeneration {
 		@Test
-		void shouldReturn201AndLocationHeaderWhenUserIsGenerated() throws Exception {
+		void shouldReturn200OkWithNewUserID() throws Exception {
 
-            URI location = URI.create(String.format("/datev/v1/encounter/%s", UUID.randomUUID()));
+            UUID userId = UUID.fromString("cc40b7c9-bf6e-412a-944d-4593f75e7501");
 
-            when(UserController.generateUserId()).thenReturn(ResponseEntity.created(location).build());
+            when(UserController.generateUserId()).thenReturn(ResponseEntity.ok(userId));
 
-			mockMvc.perform(post("/datev/v1/user/generation"))
-				.andExpect(status().isCreated())
-				.andExpect(header().exists("Location"));
+			 mockMvc.perform(post("/datev/v1/user/generation"))
+				.andExpect(status().isOk())
+                     .andExpect(content().string("\"cc40b7c9-bf6e-412a-944d-4593f75e7501\""));
+
+
 		}
 
 		@Test
