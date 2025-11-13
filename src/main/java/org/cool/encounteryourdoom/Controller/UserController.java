@@ -1,6 +1,7 @@
 package org.cool.encounteryourdoom.Controller;
 
 import org.cool.encounteryourdoom.Repository.UserRepository;
+import org.cool.encounteryourdoom.Service.UserService;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
 import org.openapitools.api.UserApi;
 import org.springframework.http.ResponseEntity;
@@ -14,35 +15,20 @@ import java.util.UUID;
 @RequestMapping("/datev/v1")
 public class UserController implements UserApi {
 
-	private final UserRepository userRepository;
+	private final UserService userService;
 
-	public UserController(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-	@Override
-	public ResponseEntity<Void> generateUserId() {
 
-		boolean isUnique = false;
-		UUID response;
-		UUID MongoID;
+    @Override
+	public ResponseEntity<UUID> generateUserId() {
 
-		do {
-			MongoID = UUID.randomUUID();
-			response = UUID.randomUUID();
-			if (this.userRepository.findAllByUserId(response).isEmpty() && this.userRepository.findById(MongoID).isEmpty()) {
-				isUnique = true;
-			}
-		} while (!isUnique);
+	    UUID response = userService.getUniqueUserID();
+        userService.addUser(response);
 
-		PrivateEncounterEntity emptyUser = new PrivateEncounterEntity();
-
-		emptyUser.setUserId(response);
-		emptyUser.setId(MongoID);
-		this.userRepository.save(emptyUser);
-
-		URI location = URI.create(String.format("/datev/v1/users/%s", response));
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.ok(response);
 	}
 
 

@@ -441,14 +441,13 @@ paths:
       tags:
         - User
       responses:
-        201:
+        200:
           description: Successfully generated a user ID.
-          headers:
-            Location:
-              description: URI of the newly created creature
+          content:
+            application/json:
               schema:
                 type: string
-                format: uri
+                format: UUID
 
   /activeEncounter/{userid}:
     get:

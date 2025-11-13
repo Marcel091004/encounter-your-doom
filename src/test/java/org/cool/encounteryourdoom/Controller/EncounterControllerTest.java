@@ -1,6 +1,5 @@
-package org.cool.encounteryourdoom.API;
+package org.cool.encounteryourdoom.Controller;
 
-import org.cool.encounteryourdoom.Controller.EncounterController;
 import org.cool.encounteryourdoom.Service.EncounterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
