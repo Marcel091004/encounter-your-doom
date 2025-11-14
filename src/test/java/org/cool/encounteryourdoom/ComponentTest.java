@@ -2,8 +2,8 @@ package org.cool.encounteryourdoom;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.cool.encounteryourdoom.Repository.CreatureRepository;
-import org.cool.encounteryourdoom.Repository.UserRepository;
+import org.cool.encounteryourdoom.repository.CreatureRepository;
+import org.cool.encounteryourdoom.repository.UserRepository;
 import org.cool.encounteryourdoom.model.CreatureEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

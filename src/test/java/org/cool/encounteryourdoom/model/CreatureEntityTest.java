@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.model;
 
 import org.cool.encounteryourdoom.MongoDBTestContainer;
-import org.cool.encounteryourdoom.Repository.CreatureRepository;
+import org.cool.encounteryourdoom.repository.CreatureRepository;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.*;
 import org.springframework.beans.factory.annotation.Autowired;

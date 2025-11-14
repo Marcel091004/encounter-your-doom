@@ -1,6 +1,6 @@
 package org.cool.encounteryourdoom.API;
 
-import org.cool.encounteryourdoom.Controller.EncounterController;
+import org.cool.encounteryourdoom.controller.EncounterController;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.Region;

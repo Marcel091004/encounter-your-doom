@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.API;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.cool.encounteryourdoom.Controller.CreatureController;
+import org.cool.encounteryourdoom.controller.CreatureController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
