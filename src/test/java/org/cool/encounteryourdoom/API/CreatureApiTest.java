@@ -42,7 +42,7 @@ public class CreatureApiTest {
     private ObjectMapper objectMapper;
 
     @Nested
-    class getCreatures {
+    class GetCreatures {
 
         @Test
         void shouldReturn200OKWhenEverythingIsInOrder() throws Exception {
@@ -77,7 +77,7 @@ public class CreatureApiTest {
     }
 
     @Nested
-    class getCreaturesById {
+    class GetCreaturesById {
 
         @Test
         void shouldReturn200OKWhenCreatureExists() throws Exception {
@@ -115,7 +115,7 @@ public class CreatureApiTest {
     }
 
     @Nested
-    class updateCreatureById {
+    class UpdateCreatureById {
 
         @Test
         void shouldReturn204NoContentWhenEverythingIsInOrder() throws Exception {
@@ -161,7 +161,7 @@ public class CreatureApiTest {
     }
 
     @Nested
-    class createCreature {
+    class CreateCreature {
 
         @Test
         void shouldReturn201CreatedWhenEverythingIsInOrder() throws Exception {
@@ -202,7 +202,7 @@ public class CreatureApiTest {
     }
 
     @Nested
-    class getRandomCreature {
+    class GetRandomCreature {
 
         @Test
         void shouldReturn200OKWithARandomCreature() throws Exception {

@@ -29,7 +29,7 @@ public class UserApiTest {
 	private MockMvc mockMvc;
 
 	@Nested
-	class userGeneration {
+	class UserGeneration {
 		@Test
 		void shouldReturn200OkWithNewUserID() throws Exception {
 
