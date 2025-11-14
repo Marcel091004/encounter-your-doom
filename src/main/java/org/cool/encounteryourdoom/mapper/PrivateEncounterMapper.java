@@ -11,6 +11,8 @@ import java.util.List;
 public interface PrivateEncounterMapper {
 	PrivateEncounterEntity toPrivatEncounterEntity(EncounterEntity e);
 
+	PrivateEncounterEntity toPrivatEncounterEntity(Encounter e);
+
 	EncounterEntity toEncounterEntity(PrivateEncounterEntity pe);
 
 	List<EncounterEntity> toEncounterEntity(List<PrivateEncounterEntity> peList);

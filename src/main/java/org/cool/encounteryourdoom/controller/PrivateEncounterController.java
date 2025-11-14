@@ -45,15 +45,14 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 
 	@Override
 	public ResponseEntity<Encounter> getEncounterForUser(UUID userId, UUID id) {
-		//TODO this is not yet implemented
-		Encounter encounter = new Encounter(); // Replace with actual encounter object
+		EncounterEntity encounter = privateEncounterService.getEncounterByID(userId, id);
 		return ResponseEntity.ok(encounter);
 	}
 
 	@Override
 	public ResponseEntity<Void> updateEncounterForUser(UUID userId, UUID id, Encounter encounter) {
-		//TODO this is not yet implemented// Replace with actual encounter object
-		return ResponseEntity.ok().build();
+        privateEncounterService.updateEncounterByID(userId, id, encounter);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override

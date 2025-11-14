@@ -5,9 +5,12 @@ import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
 import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.cool.encounteryourdoom.repository.filter.PrivateEncounterParameterFilter;
+import org.openapitools.model.Encounter;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PrivateEncounterService {
@@ -24,4 +27,18 @@ public class PrivateEncounterService {
 		List<PrivateEncounterEntity> privateEncounters = this.privateEncounterRepository.findEncountersByFilters(filter);
 		return privateEncounterMapper.toEncounterEntity(privateEncounters);
 	}
+
+    //TODO why do we need the userId again... the encounter already has a Unique ID so there is like 0 Chance you can get the wrong one
+    public EncounterEntity getEncounterByID(UUID userId, UUID encounterId) {
+        PrivateEncounterEntity privateEncounters = this.privateEncounterRepository.findById(encounterId).get();
+        return privateEncounterMapper.toEncounterEntity(privateEncounters);
+    }
+
+    public void updateEncounterByID(UUID userId, UUID encounterId, Encounter updatedEncounter) {
+       this.privateEncounterRepository.findById(encounterId).get();
+
+       PrivateEncounterEntity privateEncounterEntity = privateEncounterMapper.toPrivatEncounterEntity(updatedEncounter);
+
+       this.privateEncounterRepository.save(privateEncounterEntity);
+    }
 }
