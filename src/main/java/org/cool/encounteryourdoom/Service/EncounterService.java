@@ -38,7 +38,7 @@ public class EncounterService {
 	}
 
 	public Encounter getEncounterById(UUID id) {
-		EncounterEntity entity = this.encounterRepository.findById(id).orElse(null);
+		EncounterEntity entity = this.encounterRepository.findById(id).get();
 		return encounterMapper.toEncounter(entity);
 	}
 
