@@ -56,7 +56,7 @@ public class EncounterController implements EncounterApi {
 	@Override
 	public ResponseEntity<Void> moveEncounterToUserSpace(UUID id, UUID userId) {
 		encounterService.moveEncounterToUserSpace(id, userId);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override

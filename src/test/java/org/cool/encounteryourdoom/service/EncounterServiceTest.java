@@ -3,10 +3,10 @@ package org.cool.encounteryourdoom.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cool.encounteryourdoom.mapper.EncounterMapper;
-import org.cool.encounteryourdoom.mapper.PrivatEncounterMapper;
+import org.cool.encounteryourdoom.mapper.PrivateEncounterMapper;
 import org.cool.encounteryourdoom.repository.EncounterRepository;
 import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
-import org.cool.encounteryourdoom.repository.PrivatEncounterRepository;
+import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.cool.encounteryourdoom.TestDataHelper;
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
@@ -28,9 +28,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class EncounterServiceTest {
 	private EncounterRepository encounterRepository;
-	private PrivatEncounterRepository privatEncounterRepository;
+	private PrivateEncounterRepository privateEncounterRepository;
 	private EncounterMapper encounterMapper;
-	private PrivatEncounterMapper privatEncounterMapper;
+	private PrivateEncounterMapper privatEncounterMapper;
 	private EncounterService encounterService;
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
@@ -38,12 +38,12 @@ class EncounterServiceTest {
 	@BeforeEach
 	void setUp() {
 		encounterRepository = mock(EncounterRepository.class);
-		privatEncounterRepository = mock(PrivatEncounterRepository.class);
+		privateEncounterRepository = mock(PrivateEncounterRepository.class);
 
 		encounterMapper = mock(EncounterMapper.class);
-		privatEncounterMapper = mock(PrivatEncounterMapper.class);
+		privatEncounterMapper = mock(PrivateEncounterMapper.class);
 
-		encounterService = new EncounterService(encounterRepository, privatEncounterRepository, encounterMapper, privatEncounterMapper);
+		encounterService = new EncounterService(encounterRepository, privateEncounterRepository, encounterMapper, privatEncounterMapper);
 	}
 
 	@Nested
@@ -244,7 +244,7 @@ class EncounterServiceTest {
 			encounterService.moveEncounterToUserSpace(id, UUID.fromString("2511c53f-3e19-4c31-b153-ece0817eb2b8"));
 
 			ArgumentCaptor<PrivateEncounterEntity> captor = ArgumentCaptor.forClass(PrivateEncounterEntity.class);
-			verify(privatEncounterRepository).save(captor.capture());
+			verify(privateEncounterRepository).save(captor.capture());
 			PrivateEncounterEntity savedEntity = captor.getValue();
 			assertEquals(privateEntity, savedEntity);
 		}

@@ -324,6 +324,30 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: 'region'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Region'
+        - name: 'rarity'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/Rarity'
+        - name: 'difficultyLevel'
+          in: query
+          required: false
+          schema:
+            type: enum
+            $ref: '#/components/schemas/DifficultyLevel'
+        - name: 'partyLevel'
+          in: query
+          required: false
+          schema:
+            type: int
+            description: 'Indicates the average level of the player party.'
       responses:
         200:
           description: Successfully got all encounters for the private userspace.
@@ -714,6 +738,16 @@ components:
           type: string
           example: "100 gold pieces and a magical sword."
           description: "Rewards for successfully completing the encounter."
+
+    PrivateEncounter:
+        type: object
+        allOf:
+            - $ref: '#/components/schemas/Encounter'
+        properties:
+          userId:
+            type: string
+            format: uuid
+            example: "323e4567-e89b-12d3-a456-426614174000"
 
     ActiveEncounter:
       type: object

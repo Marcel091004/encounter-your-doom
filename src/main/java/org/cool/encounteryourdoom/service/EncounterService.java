@@ -1,10 +1,10 @@
 package org.cool.encounteryourdoom.service;
 
 import org.cool.encounteryourdoom.mapper.EncounterMapper;
-import org.cool.encounteryourdoom.mapper.PrivatEncounterMapper;
+import org.cool.encounteryourdoom.mapper.PrivateEncounterMapper;
 import org.cool.encounteryourdoom.repository.EncounterRepository;
 import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
-import org.cool.encounteryourdoom.repository.PrivatEncounterRepository;
+import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
 import org.openapitools.model.Encounter;
@@ -16,17 +16,15 @@ import java.util.UUID;
 @Service
 public class EncounterService {
 
-	//TODO : Implement EncounterService
-
 	private final EncounterRepository encounterRepository;
-	private final PrivatEncounterRepository privatEncounterRepository;
+	private final PrivateEncounterRepository privateEncounterRepository;
 
 	private final EncounterMapper encounterMapper;
-	private final PrivatEncounterMapper privatEncounterMapper;
+	private final PrivateEncounterMapper privatEncounterMapper;
 
-	EncounterService(EncounterRepository encounterRepository, PrivatEncounterRepository privatEncounterRepository, EncounterMapper encounterMapper, PrivatEncounterMapper privatEncounterMapper) {
+	EncounterService(EncounterRepository encounterRepository, PrivateEncounterRepository privateEncounterRepository, EncounterMapper encounterMapper, PrivateEncounterMapper privatEncounterMapper) {
 		this.encounterRepository = encounterRepository;
-		this.privatEncounterRepository = privatEncounterRepository;
+		this.privateEncounterRepository = privateEncounterRepository;
 
 		this.encounterMapper = encounterMapper;
 		this.privatEncounterMapper = privatEncounterMapper;
@@ -76,7 +74,7 @@ public class EncounterService {
 		PrivateEncounterEntity privateEntity = privatEncounterMapper.toPrivatEncounterEntity(entity);
 		if (entity != null) {
 			privateEntity.setUserId(userId);
-			this.privatEncounterRepository.save(privateEntity);
+			this.privateEncounterRepository.save(privateEntity);
 		} else {
 			throw new IllegalArgumentException("Encounter with ID " + id + " does not exist.");
 		}

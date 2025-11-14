@@ -1,18 +1,46 @@
 package org.cool.encounteryourdoom.controller;
 
+import org.cool.encounteryourdoom.mapper.PrivateEncounterMapper;
+import org.cool.encounteryourdoom.model.EncounterEntity;
+import org.cool.encounteryourdoom.repository.filter.PrivateEncounterParameterFilter;
+import org.cool.encounteryourdoom.service.PrivateEncounterService;
 import org.openapitools.api.PrivateEncounterApi;
+import org.openapitools.model.DifficultyLevel;
 import org.openapitools.model.Encounter;
+import org.openapitools.model.Rarity;
+import org.openapitools.model.Region;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
+@RestController
+@RequestMapping("/datev/v1")
 public class PrivateEncounterController implements PrivateEncounterApi {
+
+	private final PrivateEncounterService privateEncounterService;
+	private final PrivateEncounterMapper privateEncounterMapper;
+
+	public PrivateEncounterController(PrivateEncounterService privateEncounterService, PrivateEncounterMapper privateEncounterMapper) {
+		this.privateEncounterService = privateEncounterService;
+		this.privateEncounterMapper = privateEncounterMapper;
+	}
+
 	@Override
-	public ResponseEntity<List<Encounter>> getAllEncountersForUser(UUID userId) {
-		//TODO this is not yet implemented
-		List<Encounter> encounter = List.of(); // Replace with actual encounter object
-		return ResponseEntity.ok(encounter);
+	public ResponseEntity<List<Encounter>> getAllEncountersForUser(UUID userId, Region region, Rarity rarity, DifficultyLevel difficultyLevel, Integer partyLevel) {
+		PrivateEncounterParameterFilter filter = new PrivateEncounterParameterFilter();
+		filter.setUserId(userId);
+
+		filter.setRegion(region);
+		filter.setRarity(rarity);
+		filter.setDifficultyLevel(difficultyLevel);
+		filter.setPartyLevel(partyLevel);
+
+		List<EncounterEntity> encounters = privateEncounterService.getEncounterList(filter);
+
+		return ResponseEntity.ok(privateEncounterMapper.toEncounter(encounters));
 	}
 
 	@Override
