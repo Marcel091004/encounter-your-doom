@@ -1,6 +1,6 @@
 package org.cool.encounteryourdoom.API;
 
-import org.cool.encounteryourdoom.Controller.UserController;
+import org.cool.encounteryourdoom.controller.UserController;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UserApiTest {
 	private MockMvc mockMvc;
 
 	@Nested
-	class userGeneration {
+	class UserGeneration {
 		@Test
 		void shouldReturn200OkWithNewUserID() throws Exception {
 
