@@ -188,7 +188,7 @@ class EncounterControllerTest {
 	@Nested
 	class MoveEncounterToUserSpace {
 		@Test
-		void shouldReturnOkResponse() {
+		void shouldReturn204NoContentResponse() {
 			UUID encounterId = UUID.randomUUID();
 			UUID userId = UUID.randomUUID();
 
@@ -196,7 +196,7 @@ class EncounterControllerTest {
 
 			ResponseEntity<Void> response = encounterController.moveEncounterToUserSpace(encounterId, userId);
 
-			assertEquals(ResponseEntity.ok().build(), response);
+			assertEquals(ResponseEntity.noContent().build(), response);
 		}
 
 		@Test
