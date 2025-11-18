@@ -29,7 +29,14 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Encounter>> getAllEncountersForUser(UUID userId, Region region, Rarity rarity, DifficultyLevel difficultyLevel, Integer partyLevel) {
+	public ResponseEntity<List<Encounter>> getAllEncountersForUser(
+            UUID userId,
+            Region region,
+            Rarity rarity,
+            DifficultyLevel difficultyLevel,
+            Integer partyLevel
+    ) {
+
 		PrivateEncounterParameterFilter filter = new PrivateEncounterParameterFilter();
 		filter.setUserId(userId);
 
