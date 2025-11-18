@@ -28,15 +28,12 @@ public class EncounterController implements EncounterApi {
 	@Override
 	public ResponseEntity<List<Encounter>> getAllPublicEncounters(Region region, Rarity rarity, DifficultyLevel difficultyLevel, Integer partyLevel) {
 
-		System.out.println("Filter parameters in Controller: " + region + rarity + difficultyLevel + partyLevel);
-
 		EncounterParameterFilter filter = new EncounterParameterFilter();
 		filter.setRegion(region);
 		filter.setRarity(rarity);
 		filter.setDifficultyLevel(difficultyLevel);
 		filter.setPartyLevel(partyLevel);
 
-		System.out.println("Filter in Controller: " + filter.getRegion() + filter.getRarity() + filter.getDifficultyLevel() + filter.getPartyLevel());
 		List<Encounter> encounters = encounterService.getAllPublicEncounters(filter);
 		return ResponseEntity.ok(encounters);
 	}

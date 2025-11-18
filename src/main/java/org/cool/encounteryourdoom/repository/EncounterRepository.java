@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.repository;
 
-import org.cool.encounteryourdoom.repository.Interfaces.EncounterRepositoryInterface;
 import org.cool.encounteryourdoom.model.EncounterEntity;
+import org.cool.encounteryourdoom.repository.Interfaces.EncounterRepositoryInterface;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

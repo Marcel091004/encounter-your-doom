@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.service;
 
-import org.cool.encounteryourdoom.repository.UserRepository;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
+import org.cool.encounteryourdoom.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

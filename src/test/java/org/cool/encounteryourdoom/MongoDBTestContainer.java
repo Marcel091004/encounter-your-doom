@@ -10,5 +10,4 @@ public class MongoDBTestContainer {
     @ServiceConnection
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0")
             .withExposedPorts(27017);
-
 }

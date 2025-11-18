@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.repository.implementierungen;
 
-import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
 import org.cool.encounteryourdoom.model.EncounterEntity;
+import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

@@ -1,9 +1,9 @@
 package org.cool.encounteryourdoom.service;
 
 import org.cool.encounteryourdoom.mapper.CreatureMapper;
+import org.cool.encounteryourdoom.model.CreatureEntity;
 import org.cool.encounteryourdoom.repository.CreatureRepository;
 import org.cool.encounteryourdoom.repository.filter.CreatureParameterFilter;
-import org.cool.encounteryourdoom.model.CreatureEntity;
 import org.openapitools.model.Creature;
 import org.springframework.stereotype.Service;
 

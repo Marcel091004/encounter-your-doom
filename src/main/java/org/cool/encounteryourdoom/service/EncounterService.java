@@ -2,11 +2,11 @@ package org.cool.encounteryourdoom.service;
 
 import org.cool.encounteryourdoom.mapper.EncounterMapper;
 import org.cool.encounteryourdoom.mapper.PrivateEncounterMapper;
-import org.cool.encounteryourdoom.repository.EncounterRepository;
-import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
-import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
+import org.cool.encounteryourdoom.repository.EncounterRepository;
+import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
+import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
 import org.openapitools.model.Encounter;
 import org.springframework.stereotype.Service;
 
