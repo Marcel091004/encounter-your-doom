@@ -1,8 +1,8 @@
 package org.cool.encounteryourdoom.repository.implementierungen;
 
-import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
-import org.cool.encounteryourdoom.repository.Interfaces.EncounterRepositoryInterface;
 import org.cool.encounteryourdoom.model.EncounterEntity;
+import org.cool.encounteryourdoom.repository.Interfaces.EncounterRepositoryInterface;
+import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

@@ -2,14 +2,14 @@ package org.cool.encounteryourdoom.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.cool.encounteryourdoom.TestDataHelper;
 import org.cool.encounteryourdoom.mapper.EncounterMapper;
 import org.cool.encounteryourdoom.mapper.PrivateEncounterMapper;
-import org.cool.encounteryourdoom.repository.EncounterRepository;
-import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
-import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
-import org.cool.encounteryourdoom.TestDataHelper;
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
+import org.cool.encounteryourdoom.repository.EncounterRepository;
+import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
+import org.cool.encounteryourdoom.repository.filter.EncounterParameterFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

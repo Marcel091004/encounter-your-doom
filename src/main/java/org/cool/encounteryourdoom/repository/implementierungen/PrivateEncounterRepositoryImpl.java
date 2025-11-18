@@ -1,9 +1,7 @@
 package org.cool.encounteryourdoom.repository.implementierungen;
 
-import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
 import org.cool.encounteryourdoom.repository.Interfaces.PrivatEncounterRepositoryInterface;
-import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.cool.encounteryourdoom.repository.filter.PrivateEncounterParameterFilter;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

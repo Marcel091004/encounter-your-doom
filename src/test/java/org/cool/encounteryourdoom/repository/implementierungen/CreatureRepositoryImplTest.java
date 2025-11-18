@@ -1,7 +1,7 @@
 package org.cool.encounteryourdoom.repository.implementierungen;
 
-import org.cool.encounteryourdoom.repository.filter.CreatureParameterFilter;
 import org.cool.encounteryourdoom.model.CreatureEntity;
+import org.cool.encounteryourdoom.repository.filter.CreatureParameterFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

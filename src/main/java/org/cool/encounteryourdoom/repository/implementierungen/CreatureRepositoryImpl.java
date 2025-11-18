@@ -1,8 +1,8 @@
 package org.cool.encounteryourdoom.repository.implementierungen;
 
-import org.cool.encounteryourdoom.repository.filter.CreatureParameterFilter;
-import org.cool.encounteryourdoom.repository.Interfaces.CreatureRepositoryInterface;
 import org.cool.encounteryourdoom.model.CreatureEntity;
+import org.cool.encounteryourdoom.repository.Interfaces.CreatureRepositoryInterface;
+import org.cool.encounteryourdoom.repository.filter.CreatureParameterFilter;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
