@@ -1,5 +1,6 @@
 package org.cool.encounteryourdoom.controller;
 
+import org.cool.encounteryourdoom.service.ActiveEncounterService;
 import org.openapitools.api.ActiveEncounterApi;
 import org.openapitools.model.ActiveEncounter;
 import org.openapitools.model.StatusEffects;
@@ -12,10 +13,17 @@ import java.util.UUID;
 @RestController
 public class ActiveEncounterController implements ActiveEncounterApi {
 
-	@Override
+    private final ActiveEncounterService activeEncounterService;
+
+    public ActiveEncounterController(ActiveEncounterService activeEncounterService) {
+        this.activeEncounterService = activeEncounterService;
+    }
+
+
+    @Override
 	public ResponseEntity<ActiveEncounter> getActiveEncounterForUser(UUID userId) {
-		//TODO this is not yet implemented
-		ActiveEncounter activeEncounter = new ActiveEncounter(); // Replace with actual active encounter object
+
+		ActiveEncounter activeEncounter = this.activeEncounterService.getActiveEncounter(userId);
 		return ResponseEntity.ok(activeEncounter);
 
 	}
@@ -28,14 +36,16 @@ public class ActiveEncounterController implements ActiveEncounterApi {
 			Integer damage,
 			List<StatusEffects> statusEffect
 	) {
-		//TODO this is not yet implemented
+
+        this.activeEncounterService.updateCreatureInActiveEncounter(userId, creatureId, heal, damage, statusEffect);
 		return ResponseEntity.ok().build();
 
 	}
 
 	@Override
 	public ResponseEntity<Void> closeActiveEncounterForUser(UUID userId) {
-		//TODO this is not yet implemented
+
+        this.activeEncounterService.deleteActiveEncounter(userId);
 		return ResponseEntity.ok().build();
 
 	}
