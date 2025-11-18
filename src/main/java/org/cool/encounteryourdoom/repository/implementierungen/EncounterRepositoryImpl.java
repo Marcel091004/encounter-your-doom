@@ -26,8 +26,6 @@ public class EncounterRepositoryImpl implements EncounterRepositoryInterface {
 
 	    if (filter != null) {
 	        if (filter.getRegion() != null) {
-				System.out.println("Filtering by region: " + filter.getRegion());
-				System.out.println(Criteria.where("region").is(filter.getRegion()));
 	            criteriaList.add(Criteria.where("region").is(filter.getRegion()));
 	        }
 	        if (filter.getRarity() != null) {
@@ -40,13 +38,11 @@ public class EncounterRepositoryImpl implements EncounterRepositoryInterface {
 	            criteriaList.add(Criteria.where("partyLevel").is(filter.getPartyLevel()));
 	        }
 	        if (criteriaList.isEmpty()) {
-				System.out.println("No filters applied, returning all encounters.");
 				query = new Query();
 	        }
 
 			criteriaList.forEach(query::addCriteria);
 
-			System.out.println(query.getQueryObject());
 	        return mongoTemplate.find(query, EncounterEntity.class);
 	    }
 

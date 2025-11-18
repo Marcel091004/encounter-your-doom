@@ -40,7 +40,6 @@ public class CreatureRepositoryImpl implements CreatureRepositoryInterface {
                 criteriaList.add(Criteria.where("uuid").is(filter.getUuid()));
             }
             if (criteriaList.isEmpty()) {
-                System.out.println("No filters applied, returning all encounters.");
                 query = new Query();
             }
         }
