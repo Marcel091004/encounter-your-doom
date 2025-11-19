@@ -16,6 +16,7 @@ public class PrivateEncounterService {
 
 	private final PrivateEncounterRepository privateEncounterRepository;
 	private final PrivateEncounterMapper privateEncounterMapper;
+	private ActiveEncounterService activeEncounterService;
 
 	public PrivateEncounterService(PrivateEncounterRepository privateEncounterRepository, PrivateEncounterMapper privateEncounterMapper) {
 		this.privateEncounterRepository = privateEncounterRepository;
@@ -40,4 +41,11 @@ public class PrivateEncounterService {
 
        this.privateEncounterRepository.save(privateEncounterEntity);
     }
+
+	public void startEncounter(UUID encounterId) {
+		PrivateEncounterEntity privateEncounterEntity = this.privateEncounterRepository.findById(encounterId).get();
+		activeEncounterService.createActiveEncounterForUser(privateEncounterEntity.getUserId(), encounterId);
+	}
+
+
 }

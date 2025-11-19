@@ -64,8 +64,8 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 
 	@Override
 	public ResponseEntity<Void> startEncounterForUser(UUID userId, UUID id) {
-		//TODO this is not yet implemented
-		return ResponseEntity.ok().build();
+		privateEncounterService.startEncounter(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
