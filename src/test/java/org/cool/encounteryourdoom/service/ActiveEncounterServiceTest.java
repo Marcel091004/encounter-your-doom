@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.model.ActiveEncounter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,8 +19,8 @@ public class ActiveEncounterServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		activeEncounter = org.mockito.Mockito.mock(ActiveEncounter.class);
-		activeEncounterService = org.mockito.Mockito.mock(ActiveEncounterService.class);
+		activeEncounter = mock(ActiveEncounter.class);
+		activeEncounterService = mock(ActiveEncounterService.class);
 	}
 
 	@Nested
