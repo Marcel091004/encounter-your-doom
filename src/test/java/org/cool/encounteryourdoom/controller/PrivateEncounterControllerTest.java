@@ -12,6 +12,7 @@ import org.openapitools.model.Rarity;
 import org.openapitools.model.Region;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -183,6 +184,66 @@ public class PrivateEncounterControllerTest {
 			    .updateEncounterByID(userId, encounterId, encounter);
 			try {
 				privateEncounterController.updateEncounterForUser(userId, encounterId, encounter);
+			} catch (RuntimeException e) {
+				assertEquals("Service error", e.getMessage());
+			}
+		}
+	}
+
+	@Nested
+	class StartPrivateEncounter {
+		@Test
+		void shouldReturn204NoContentOnSuccessfulStart() {
+			UUID userId = UUID.randomUUID();
+			UUID encounterId = UUID.randomUUID();
+
+			doNothing().when(privateEncounterService).startEncounter(any());
+
+			ResponseEntity<Void> response = privateEncounterController.startEncounterForUser(userId, encounterId);
+
+			assertEquals(ResponseEntity.noContent().build(), response);
+		}
+
+		@Test
+		void shouldHandleErrorFromService() {
+			UUID userId = UUID.randomUUID();
+			UUID encounterId = UUID.randomUUID();
+			doThrow(new RuntimeException("Service error"))
+			    .when(privateEncounterService)
+			    .startEncounter(encounterId);
+
+			try {
+				privateEncounterController.startEncounterForUser(userId, encounterId);
+			} catch (RuntimeException e) {
+				assertEquals("Service error", e.getMessage());
+			}
+		}
+	}
+
+	@Nested
+	class CreatePrivateEncounter {
+		@Test
+		void shouldReturn201CreatedOnSuccessfulCreation() {
+			UUID userId = UUID.randomUUID();
+			Encounter encounter = new Encounter();
+
+			doNothing().when(privateEncounterService).createPrivateEncounter(any(), any());
+
+			ResponseEntity<Void> response = privateEncounterController.createEncounterForUser(userId, encounter);
+
+			assertEquals(ResponseEntity.created(URI.create("/datev/v1/privateEncounter/null")).build(), response);
+		}
+
+		@Test
+		void shouldHandleErrorFromService() {
+			UUID userId = UUID.randomUUID();
+			Encounter encounter = new Encounter();
+			doThrow(new RuntimeException("Service error"))
+			    .when(privateEncounterService)
+			    .createPrivateEncounter(userId, encounter);
+
+			try {
+				privateEncounterController.createEncounterForUser(userId, encounter);
 			} catch (RuntimeException e) {
 				assertEquals("Service error", e.getMessage());
 			}

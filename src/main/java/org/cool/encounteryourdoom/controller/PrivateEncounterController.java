@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,9 +71,9 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 
 	@Override
 	public ResponseEntity<Void> createEncounterForUser(UUID id, Encounter encounter) {
-		//TODO this is not yet implemented
-		UUID response = UUID.randomUUID();
-		return (ResponseEntity<Void>) ResponseEntity.ok();
+		privateEncounterService.createPrivateEncounter(id, encounter);
+		URI location = URI.create(String.format("/datev/v1/privateEncounter/%s", encounter.getId()));
+		return ResponseEntity.created(location).build();
 	}
 
 }
