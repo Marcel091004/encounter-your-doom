@@ -16,9 +16,6 @@ import java.util.UUID;
 @Service
 public class ActiveEncounterService {
 
-    //TODO: Implement ActiveEncounterService
-    //TODO reminder, !!kein Repository hier rein!! NIX DATENBANK
-
      HashMap<UUID, ActiveEncounter> activeEncounters;
 
      private final EncounterRepository encounterRepository;

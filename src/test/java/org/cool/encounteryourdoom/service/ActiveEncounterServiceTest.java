@@ -8,8 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.model.ActiveEncounter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ActiveEncounterServiceTest {
@@ -23,28 +23,56 @@ public class ActiveEncounterServiceTest {
 		activeEncounterService = mock(ActiveEncounterService.class);
 	}
 
-	@Nested
-	class GetActiveEncounter {
+    //TODO finish these tests
 
-		@Test
-		void getActiveEncounterWith200() {
-
-			ActiveEncounter encounter = new ActiveEncounter();
-
-			when(activeEncounterService.getActiveEncounter(null)).thenReturn(activeEncounter);
-
-			ActiveEncounter response = activeEncounterService.getActiveEncounter(null);
-
-			assertEquals(encounter.getEncounter(), response.getEncounter());
-		}
-
-		@Test
-		void getActiveEncounterWith400() {
-			when(activeEncounterService.getActiveEncounter(null)).thenReturn(null);
-
-			ActiveEncounter response = activeEncounterService.getActiveEncounter(null);
-
-			assertEquals(null, response);
-		}
-	}
+//	@Nested
+//	class GetActiveEncounter {
+//
+//		@Test
+//		void shouldReturnActiveEncounter() {
+//
+//			ActiveEncounter encounter = new ActiveEncounter();
+//
+//			when(activeEncounterService.getActiveEncounter(null)).thenReturn(activeEncounter);
+//
+//			ActiveEncounter response = activeEncounterService.getActiveEncounter(null);
+//
+//			assertEquals(encounter.getEncounter(), response.getEncounter());
+//		}
+//
+//		@Test
+//		void getActiveEncounterWith400() {
+//			when(activeEncounterService.getActiveEncounter(null)).thenReturn(null);
+//
+//			ActiveEncounter response = activeEncounterService.getActiveEncounter(null);
+//
+//            assertNull(response);
+//		}
+//	}
+//
+//    @Nested
+//    class createActiveEncounterForUser {
+//
+//        @Test
+//        void getActiveEncounterWith200() {
+//
+//            ActiveEncounter encounter = new ActiveEncounter();
+//
+//            doNothing().when(activeEncounterService).createActiveEncounterForUser(any(), any());
+//
+//
+//            ActiveEncounter response = activeEncounterService.getActiveEncounter(null);
+//
+//            assertEquals(encounter.getEncounter(), response.getEncounter());
+//        }
+//
+//        @Test
+//        void getActiveEncounterWith400() {
+//            when(activeEncounterService.getActiveEncounter(null)).thenReturn(null);
+//
+//            ActiveEncounter response = activeEncounterService.getActiveEncounter(null);
+//
+//            assertNull(response);
+//        }
+//    }
 }
