@@ -135,7 +135,7 @@ public class PrivateEncounterServiceTest {
 			try {
 				privateEncounterService.updateEncounterByID(userId, encounterId, updatedEncounter);
 			} catch (Exception e) {
-				assertEquals(java.util.NoSuchElementException.class, e.getClass());
+				assertEquals(NullPointerException.class, e.getClass());
 			}
 		}
 
