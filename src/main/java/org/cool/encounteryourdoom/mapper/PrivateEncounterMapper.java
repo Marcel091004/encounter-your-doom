@@ -20,4 +20,6 @@ public interface PrivateEncounterMapper {
 	List<Encounter> toEncounterFromPrivate(List<PrivateEncounterEntity> peList);
 
 	List<Encounter> toEncounter(List<EncounterEntity> peList);
+
+	Encounter toEncounter(EncounterEntity e);
 }
