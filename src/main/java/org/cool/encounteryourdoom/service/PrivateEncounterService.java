@@ -18,9 +18,10 @@ public class PrivateEncounterService {
 	private final PrivateEncounterMapper privateEncounterMapper;
 	private ActiveEncounterService activeEncounterService;
 
-	public PrivateEncounterService(PrivateEncounterRepository privateEncounterRepository, PrivateEncounterMapper privateEncounterMapper) {
+	public PrivateEncounterService(PrivateEncounterRepository privateEncounterRepository, PrivateEncounterMapper privateEncounterMapper, ActiveEncounterService activeEncounterService) {
 		this.privateEncounterRepository = privateEncounterRepository;
 		this.privateEncounterMapper = privateEncounterMapper;
+		this.activeEncounterService = activeEncounterService;
 	}
 
 	public List<EncounterEntity> getEncounterList(PrivateEncounterParameterFilter filter) {
@@ -47,5 +48,12 @@ public class PrivateEncounterService {
 		activeEncounterService.createActiveEncounterForUser(privateEncounterEntity.getUserId(), encounterId);
 	}
 
+	public void createPrivateEncounter(UUID userId, Encounter encounter) {
+		PrivateEncounterEntity privateEncounterEntity = privateEncounterMapper.toPrivatEncounterEntity(encounter);
 
+		privateEncounterEntity.setId(UUID.randomUUID());
+		privateEncounterEntity.setUserId(userId);
+
+		privateEncounterRepository.save(privateEncounterEntity);
+	}
 }
