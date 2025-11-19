@@ -243,4 +243,45 @@ public class TestDataHelper {
 						""";
 	}
 
+    public static String getActiveEncounterJson() {
+        return
+                """
+                        {
+                              "Id": "123e4567-e89b-12d3-a456-426614174000",
+                              "initiative": 18,
+                              "name": "Dunkler Schatten",
+                              "HP": 150,
+                              "AC": 17,
+                              "CreatureDescription": "Ein schattenhaftes Wesen, das in der Dunkelheit lauert.",
+                              "statBlock": {
+                                "Str": 12,
+                                "Dex": 18,
+                                "Con": 14,
+                                "Int": 10,
+                                "Wis": 13,
+                                "Cha": 8
+                              },
+                              "statusEffects": ["Unsichtbar"],
+                              "resistances": ["Necrotic"],
+                              "immunities": ["Poison"],
+                              "weaknesses": ["Radiant"],
+                              "region": ["Ruinen"],
+                              "rarity": ["Uncommon"],
+                              "cr": "5",
+                              "Speed": 40,
+                              "traits": ["Schattenform", "Furchteinflößend"],
+                              "attack": [
+                                {
+                                  "name": "Schattenklaue",
+                                  "damage": "2d6+4",
+                                  "type": "Necrotic"
+                                }
+                              ]
+                            }
+                        
+                        
+                        """;
+    }
+
+
 }
