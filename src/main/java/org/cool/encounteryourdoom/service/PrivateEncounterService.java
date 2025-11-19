@@ -9,6 +9,7 @@ import org.openapitools.model.Encounter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,7 +17,7 @@ public class PrivateEncounterService {
 
 	private final PrivateEncounterRepository privateEncounterRepository;
 	private final PrivateEncounterMapper privateEncounterMapper;
-	private ActiveEncounterService activeEncounterService;
+	private final ActiveEncounterService activeEncounterService;
 
 	public PrivateEncounterService(PrivateEncounterRepository privateEncounterRepository, PrivateEncounterMapper privateEncounterMapper, ActiveEncounterService activeEncounterService) {
 		this.privateEncounterRepository = privateEncounterRepository;
@@ -36,10 +37,10 @@ public class PrivateEncounterService {
     }
 
     public void updateEncounterByID(UUID userId, UUID encounterId, Encounter updatedEncounter) {
-       this.privateEncounterRepository.findById(encounterId).get();
+       this.privateEncounterRepository.findById(encounterId);
 
        PrivateEncounterEntity privateEncounterEntity = privateEncounterMapper.toPrivatEncounterEntity(updatedEncounter);
-
+	   privateEncounterEntity.setUserId(userId);
        this.privateEncounterRepository.save(privateEncounterEntity);
     }
 
