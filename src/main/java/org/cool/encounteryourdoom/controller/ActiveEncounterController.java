@@ -5,12 +5,14 @@ import org.openapitools.api.ActiveEncounterApi;
 import org.openapitools.model.ActiveEncounter;
 import org.openapitools.model.StatusEffects;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("datev/v1")
 public class ActiveEncounterController implements ActiveEncounterApi {
 
     private final ActiveEncounterService activeEncounterService;
@@ -38,7 +40,7 @@ public class ActiveEncounterController implements ActiveEncounterApi {
 	) {
 
         this.activeEncounterService.updateCreatureInActiveEncounter(userId, creatureId, heal, damage, statusEffect);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 
 	}
 
@@ -46,7 +48,7 @@ public class ActiveEncounterController implements ActiveEncounterApi {
 	public ResponseEntity<Void> closeActiveEncounterForUser(UUID userId) {
 
         this.activeEncounterService.deleteActiveEncounter(userId);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 
 	}
 
