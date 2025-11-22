@@ -26,8 +26,8 @@ on:
         type: string
 
 env:
-  MANIFEST_PATH: "manifest.yml" # ProFlows-Setup-TODO [MANIFEST_PATH] replace it with the path to the manifest file, for example: service1/manifest.yml
-  VARS_FILE_PATH: "" # ProFlows-Setup-TODO [VARS_FILE_PATH] set the path to the vars file if you need, for example: service1/vars-dev.yml
+  MANIFEST_PATH: "manifest.yml" # ProFlows-Setup [MANIFEST_PATH] replace it with the path to the manifest file, for example: service1/manifest.yml
+  VARS_FILE_PATH: "" # ProFlows-Setup [VARS_FILE_PATH] set the path to the vars file if you need, for example: service1/vars-dev.yml
   VERSION: ${{ github.event.client_payload.publish.version || github.event.inputs.version }}
 
   # =================== If Vault is NOT used ==========================
@@ -39,8 +39,8 @@ env:
 
 jobs:
   deploy:
-    runs-on: cnrz # ProFlows-Setup-TODO [RUNS_ON] set cnrz (deploy in to CnRZ PaaS) or classic-rz (deploy in to Classic-RZ PaaS)
-    environment: qs # ProFlows-Setup-TODO [ENVIRONMENT] set the correct environment name, for example: dev-deployableServiceX
+    runs-on: cnrz # ProFlows-Setup [RUNS_ON] set cnrz (deploy in to CnRZ PaaS) or classic-rz (deploy in to Classic-RZ PaaS)
+    environment: qs # ProFlows-Setup [ENVIRONMENT] set the correct environment name, for example: dev-deployableServiceX
 
     # Changed to permissions: 'write-all' for compatibility, flexibility, and ease of customization.
     # Please update to stricter permissions if your workflow has specific security requirements.

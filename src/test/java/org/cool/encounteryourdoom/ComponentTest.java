@@ -129,8 +129,6 @@ public class ComponentTest {
 					}
 				});
 
-				//TODO für Christian: warum ur Hölle brauch ich das hier so? der Enum wert is ja auch klein geschrieben? oder matchen wir auf den Enum Eintrag?
-				//TODO das würde es irgendwie erklären aber is dumm
 				MvcResult result = mockMvc.perform(get("/datev/v1/creature?region=FOREST"))
 						.andExpect(status().isOk())
 						.andReturn();
@@ -190,8 +188,6 @@ public class ComponentTest {
 					}
 				});
 
-				//TODO für Christian: warum ur Hölle brauch ich das hier so? der Enum wert is ja auch klein geschrieben? oder matchen wir auf den Enum Eintrag?
-				//TODO das würde es irgendwie erklären aber is dumm
 				MvcResult result = mockMvc.perform(get("/datev/v1/creature?rarity=LEGENDARY"))
 						.andExpect(status().isOk())
 						.andReturn();
@@ -251,7 +247,6 @@ public class ComponentTest {
 					}
 				});
 
-				//TODO für Christian: hier isses etz klein
 				MvcResult result = mockMvc.perform(get("/datev/v1/creature?cr=10"))
 						.andExpect(status().isOk())
 						.andReturn();

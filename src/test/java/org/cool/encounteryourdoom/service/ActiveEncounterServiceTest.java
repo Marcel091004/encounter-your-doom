@@ -1,15 +1,11 @@
 package org.cool.encounteryourdoom.service;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.model.ActiveEncounter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class ActiveEncounterServiceTest {
@@ -23,7 +19,7 @@ public class ActiveEncounterServiceTest {
 		activeEncounterService = mock(ActiveEncounterService.class);
 	}
 
-    //TODO finish these tests
+	//TODO finish these tests
 
 //	@Nested
 //	class GetActiveEncounter {

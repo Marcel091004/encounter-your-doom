@@ -42,5 +42,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(java.util.NoSuchElementException.class)
+	public ResponseEntity<Map<String, Object>> handleNoSuchElementException(java.util.NoSuchElementException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", "Das angeforderte Element wurde nicht gefunden.");
+		body.put("details", ex.getMessage());
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+	}
 
 }

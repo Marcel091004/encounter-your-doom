@@ -10,5 +10,4 @@ import java.util.UUID;
 @Repository
 public interface CreatureRepository extends MongoRepository<CreatureEntity, UUID>, CreatureRepositoryInterface {
 
-
 }

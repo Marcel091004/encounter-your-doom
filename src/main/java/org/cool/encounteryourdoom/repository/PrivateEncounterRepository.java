@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface PrivateEncounterRepository extends MongoRepository<PrivateEncounterEntity, UUID>, PrivatEncounterRepositoryInterface {
 
+    void deleteByUserIdAndId(UUID userId, UUID Id);
 }

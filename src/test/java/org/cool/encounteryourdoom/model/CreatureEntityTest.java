@@ -33,9 +33,9 @@ class CreatureEntityTest {
         creature.setAC(15);
         creature.setCr("14");
         creature.setHP(120);
-        creature.setImmunities(List.of(DamageTypes.COLD));
-        creature.setResistances(List.of(DamageTypes.FIRE));
-        creature.setWeaknesses(List.of(DamageTypes.RADIANT));
+        creature.setImmunities(List.of(DamageType.COLD));
+        creature.setResistances(List.of(DamageType.FIRE));
+        creature.setWeaknesses(List.of(DamageType.RADIANT));
         creature.setSpeed(60);
         creature.setRegion(Collections.singletonList(Region.FOREST));
         creature.setInitiative(24);
@@ -58,9 +58,9 @@ class CreatureEntityTest {
         assertEquals(15, found.getAC());
         assertEquals("14", found.getCr());
         assertEquals(120, found.getHP());
-        assertEquals(List.of(DamageTypes.COLD), found.getImmunities());
-        assertEquals(List.of(DamageTypes.FIRE), found.getResistances());
-        assertEquals(List.of(DamageTypes.RADIANT), found.getWeaknesses());
+        assertEquals(List.of(DamageType.COLD), found.getImmunities());
+        assertEquals(List.of(DamageType.FIRE), found.getResistances());
+        assertEquals(List.of(DamageType.RADIANT), found.getWeaknesses());
         assertEquals(60, found.getSpeed());
         assertEquals(Collections.singletonList(Region.FOREST), found.getRegion());
         assertEquals(24, found.getInitiative());

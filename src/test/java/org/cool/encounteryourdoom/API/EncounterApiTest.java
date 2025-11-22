@@ -175,7 +175,6 @@ public class EncounterApiTest {
 							.content(encounterJson))
 					.andExpect(status().isCreated())
 					.andExpect(header().string("Location", location.toString()));
-			//TODO: Gültigkeit der UUID prüfen notwendig?
 		}
 
 		@Test

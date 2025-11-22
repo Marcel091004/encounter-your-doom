@@ -181,4 +181,31 @@ public class PrivateEncounterApiTest {
 					.andExpect(status().isBadRequest());
 		}
 	}
+
+	@Nested
+	class DeletePrivateEncounter {
+		@Test
+		void deletesPrivateEncounterWith204NoContent() throws Exception {
+
+			when(privateEncounterController.deleteEncounterForUser(any(), any())).thenReturn(ResponseEntity.noContent().build());
+
+			UUID userid = UUID.randomUUID();
+			UUID encounterid = UUID.randomUUID();
+
+			mockMvc.perform(delete("/datev/v1/privateEncounter/" + encounterid + "/user/" + userid))
+					.andExpect(status().isNoContent());
+		}
+
+		@Test
+		void returns400BadRequestWhenGivenInvalidUUID() throws Exception {
+
+			when(privateEncounterController.deleteEncounterForUser(any(), any())).thenReturn(ResponseEntity.badRequest().build());
+
+			String userid = "invalid-uuid";
+			String encounterid = "invalid-uuid";
+
+			mockMvc.perform(delete("/datev/v1/privateEncounter/" + encounterid + "/user/" + userid))
+					.andExpect(status().isBadRequest());
+		}
+	}
 }

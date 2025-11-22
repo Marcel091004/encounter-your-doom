@@ -2,6 +2,7 @@ package org.cool.encounteryourdoom.service;
 
 import org.cool.encounteryourdoom.repository.CreatureRepository;
 import org.cool.encounteryourdoom.repository.EncounterRepository;
+import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.openapitools.model.ActiveEncounter;
 import org.openapitools.model.Creature;
 import org.openapitools.model.Encounter;
@@ -16,80 +17,87 @@ import java.util.UUID;
 @Service
 public class ActiveEncounterService {
 
-     HashMap<UUID, ActiveEncounter> activeEncounters;
+	private final HashMap<UUID, ActiveEncounter> activeEncounters = new HashMap<>();
+	private final EncounterRepository encounterRepository;
+	private final PrivateEncounterRepository privateEncounterRepository;
+	private final CreatureRepository creatureRepository;
 
-     private final EncounterRepository encounterRepository;
-     private final CreatureRepository creatureRepository;
-
-    public ActiveEncounterService(EncounterRepository encounterRepository, CreatureRepository creatureRepository) {
-        this.encounterRepository = encounterRepository;
-        this.creatureRepository = creatureRepository;
-    }
-
-
-    public ActiveEncounter getActiveEncounter(UUID userId) {
-        return activeEncounters.get(userId);
-    }
-
-    public void createActiveEncounterForUser(UUID userId, UUID encounterId) {
-        Encounter encounter = encounterRepository.findById(encounterId).get();
-        ActiveEncounter activeEncounter = buildActiveEncounter(encounter);
-        activeEncounters.put(userId, activeEncounter);
-    }
+	public ActiveEncounterService(
+			EncounterRepository encounterRepository,
+			CreatureRepository creatureRepository,
+			PrivateEncounterRepository privateEncounterRepository) {
+		this.encounterRepository = encounterRepository;
+		this.creatureRepository = creatureRepository;
+		this.privateEncounterRepository = privateEncounterRepository;
+	}
 
 
-    private ActiveEncounter buildActiveEncounter(Encounter encounter) {
-        ActiveEncounter activeEncounter = new ActiveEncounter();
+	public ActiveEncounter getActiveEncounter(UUID userId) {
+		return activeEncounters.get(userId);
+	}
 
-        List<UUID> UUIDOfCreatures = encounter.getCreatures();
+	public void createActiveEncounterForUser(UUID userId, UUID encounterId) {
+		//TODO: sollte erst das private durchsuchen wegen dort möglichen Abweichungen!
+//		Encounter encounter = PrivateEncounterRepository.findById(encounterId).get();
 
-        List<Creature> creatures = new ArrayList<>();
+		Encounter encounter = encounterRepository.findById(encounterId).get();
+		ActiveEncounter activeEncounter = buildActiveEncounter(encounter);
+		activeEncounters.put(userId, activeEncounter);
+	}
 
-        UUIDOfCreatures.forEach(uuid -> {
 
-           Creature creature = creatureRepository.findById(uuid).get();
-              creatures.add(creature);
+	private ActiveEncounter buildActiveEncounter(Encounter encounter) {
+		ActiveEncounter activeEncounter = new ActiveEncounter();
 
-        });
+		List<UUID> UUIDOfCreatures = encounter.getCreatures();
 
-        activeEncounter.setEncounter(encounter);
-        activeEncounter.setCreatures(creatures);
-        return activeEncounter;
-    }
+		List<Creature> creatures = new ArrayList<>();
 
-    public void updateCreatureInActiveEncounter(UUID userId, UUID creatureId, Integer heal, Integer damage, List<StatusEffects> statusEffects) {
+		UUIDOfCreatures.forEach(uuid -> {
 
-        ActiveEncounter activeEncounter = activeEncounters.get(userId);
-        List<Creature> creatures = activeEncounter.getCreatures();
+			Creature creature = creatureRepository.findById(uuid).get();
+			creatures.add(creature);
 
-        Creature creatureToBeUpdated = creatures.stream()
-                .filter(creature -> creature.getId().equals(creatureId))
-                .findFirst()
-                .orElse(null);
+		});
 
-        if (creatureToBeUpdated != null) {
+		activeEncounter.setEncounter(encounter);
+		activeEncounter.setCreatures(creatures);
+		return activeEncounter;
+	}
 
-            if (heal != null) {
-                int newHealth = creatureToBeUpdated.getHP() + heal;
-                creatureToBeUpdated.setHP(newHealth);
-            }
+	public void updateCreatureInActiveEncounter(UUID userId, UUID creatureId, Integer heal, Integer damage, List<StatusEffects> statusEffects) {
 
-            if (damage != null) {
-                int newHealth = creatureToBeUpdated.getHP() - damage;
-                creatureToBeUpdated.setHP(newHealth);
-            }
+		ActiveEncounter activeEncounter = activeEncounters.get(userId);
+		List<Creature> creatures = activeEncounter.getCreatures();
 
-            if (statusEffects != null) {
-                creatureToBeUpdated.setStatusEffects(statusEffects);
-            }
-        } else {
-            throw new IllegalArgumentException("Creature with ID " + creatureId + " not found in active encounter for user " + userId);
-        }
+		Creature creatureToBeUpdated = creatures.stream()
+				.filter(creature -> creature.getId().equals(creatureId))
+				.findFirst()
+				.orElse(null);
 
-    }
+		if (creatureToBeUpdated != null) {
 
-    public void deleteActiveEncounter(UUID userId) {
-        activeEncounters.remove(userId);
-    }
+			if (heal != null) {
+				int newHealth = creatureToBeUpdated.getHP() + heal;
+				creatureToBeUpdated.setHP(newHealth);
+			}
+
+			if (damage != null) {
+				int newHealth = creatureToBeUpdated.getHP() - damage;
+				creatureToBeUpdated.setHP(newHealth);
+			}
+
+			if (statusEffects != null) {
+				creatureToBeUpdated.setStatusEffects(statusEffects);
+			}
+		} else {
+			throw new IllegalArgumentException("Creature with ID " + creatureId + " not found in active encounter for user " + userId);
+		}
+
+	}
+
+	public void deleteActiveEncounter(UUID userId) {
+		activeEncounters.remove(userId);
+	}
 
 }

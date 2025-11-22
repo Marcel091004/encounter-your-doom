@@ -18,13 +18,13 @@ paths:
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Region'
+            $ref: '#/components/schemas/region'
         - name: 'rarity'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Rarity'
+            $ref: '#/components/schemas/rarity'
         - name: 'cr'
           in: query
           required: false
@@ -124,13 +124,13 @@ paths:
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Region'
+            $ref: '#/components/schemas/region'
         - name: 'rarity'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Rarity'
+            $ref: '#/components/schemas/rarity'
         - name: 'cr'
           in: query
           required: false
@@ -158,19 +158,19 @@ paths:
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Region'
+            $ref: '#/components/schemas/region'
         - name: 'rarity'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Rarity'
+            $ref: '#/components/schemas/rarity'
         - name: 'difficultyLevel'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/DifficultyLevel'
+            $ref: '#/components/schemas/difficultyLevel'
         - name: 'partyLevel'
           in: query
           required: false
@@ -284,19 +284,19 @@ paths:
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Region'
+            $ref: '#/components/schemas/region'
         - name: 'rarity'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Rarity'
+            $ref: '#/components/schemas/rarity'
         - name: 'difficultyLevel'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/DifficultyLevel'
+            $ref: '#/components/schemas/difficultyLevel'
         - name: 'partyLevel'
           in: query
           required: false
@@ -329,19 +329,19 @@ paths:
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Region'
+            $ref: '#/components/schemas/region'
         - name: 'rarity'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/Rarity'
+            $ref: '#/components/schemas/rarity'
         - name: 'difficultyLevel'
           in: query
           required: false
           schema:
             type: enum
-            $ref: '#/components/schemas/DifficultyLevel'
+            $ref: '#/components/schemas/difficultyLevel'
         - name: 'partyLevel'
           in: query
           required: false
@@ -457,6 +457,27 @@ paths:
       responses:
         204:
           description: Successfully started encounter for the private userspace.
+    delete:
+      summary: Deletes an encounter for a specific private userspace.
+      operationId: deleteEncounterForUser
+      tags:
+        - privateEncounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: Successfully deleted encounter for the private userspace.
 
   /user/generation:
     post:
@@ -544,7 +565,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/StatusEffects'
+              $ref: '#/components/schemas/statusEffects'
       responses:
         204:
           description: Successfully updated creature in the active encounter for the private userspace.
@@ -603,31 +624,31 @@ components:
           type: array
           items:
             example: [ "Poisoned", "Stunned" ]
-            $ref: '#/components/schemas/StatusEffects'
+            $ref: '#/components/schemas/statusEffects'
         resistances:
           type: array
           items:
             example: [ "Fire", "Cold" ]
-            $ref: '#/components/schemas/damageTypes'
+            $ref: '#/components/schemas/damageType'
         immunities:
           type: array
           items:
             example: [ "Poison", "Charm" ]
-            $ref: '#/components/schemas/damageTypes'
+            $ref: '#/components/schemas/damageType'
         weaknesses:
           type: array
           items:
             example: [ "Radiant", "Psychic" ]
-            $ref: '#/components/schemas/damageTypes'
+            $ref: '#/components/schemas/damageType'
         region:
           type: array
           items:
-            $ref: '#/components/schemas/Region'
+            $ref: '#/components/schemas/region'
             example: "Forest"
         rarity:
           type: array
           items:
-            $ref: '#/components/schemas/Rarity'
+            $ref: '#/components/schemas/rarity'
             example: "Common"
         cr:
           type: string
@@ -664,10 +685,14 @@ components:
           type: string
           example: "A quick slash with a sharp blade."
         damageType:
-          type: array
+          type: String
           items:
             example: "Slashing"
-            $ref: '#/components/schemas/damageTypes'
+            $ref: '#/components/schemas/damageType'
+        range:
+          type: string
+          example: "Melee"
+          description: "The range of the attack (e.g., Melee, Ranged 30/120)."
 
     StatBlock:
       type: object
@@ -720,13 +745,13 @@ components:
             format: uuid
           description: "List of creatures involved in the encounter."
         region:
-          $ref: '#/components/schemas/Region'
+          $ref: '#/components/schemas/region'
         partyLevel:
           type: integer
           example: 3
           description: "Indicates the average level of the player party."
         difficultyLevel:
-          $ref: '#/components/schemas/DifficultyLevel'
+          $ref: '#/components/schemas/difficultyLevel'
           example: "Medium"
           description: "Indicates the overall difficulty level of the encounter."
         description:
@@ -740,14 +765,14 @@ components:
           description: "Rewards for successfully completing the encounter."
 
     PrivateEncounter:
-        type: object
-        allOf:
-            - $ref: '#/components/schemas/Encounter'
-        properties:
-          userId:
-            type: string
-            format: uuid
-            example: "323e4567-e89b-12d3-a456-426614174000"
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Encounter'
+      properties:
+        userId:
+          type: string
+          format: uuid
+          example: "323e4567-e89b-12d3-a456-426614174000"
 
     ActiveEncounter:
       type: object
@@ -759,7 +784,7 @@ components:
           items:
             $ref: '#/components/schemas/Creature'
 
-    DifficultyLevel:
+    difficultyLevel:
       type: string
       enum:
         - Trivial
@@ -767,7 +792,7 @@ components:
         - Medium
         - Hard
         - Deadly
-    damageTypes:
+    damageType:
       type: string
       enum:
         - Slashing
@@ -783,7 +808,7 @@ components:
         - Radiant
         - Thunder
         - Force
-    StatusEffects:
+    statusEffects:
       type: string
       enum:
         - Blinded
@@ -800,7 +825,7 @@ components:
         - Restrained
         - Stunned
         - Unconscious
-    Region:
+    region:
       type: string
       enum:
         - Forest
@@ -815,7 +840,7 @@ components:
         - Jungle
         - Hills
         - Volcanic
-    Rarity:
+    rarity:
       type: string
       enum:
         - Common

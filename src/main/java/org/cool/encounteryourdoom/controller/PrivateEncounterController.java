@@ -64,7 +64,7 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 	}
 
 	@Override
-	public ResponseEntity<Void> startEncounterForUser(UUID userId, UUID id) {
+	public ResponseEntity<Void> startEncounterForUser(UUID id, UUID userId) {
 		privateEncounterService.startEncounter(id);
 		return ResponseEntity.noContent().build();
 	}
@@ -74,6 +74,12 @@ public class PrivateEncounterController implements PrivateEncounterApi {
 		privateEncounterService.createPrivateEncounter(id, encounter);
 		URI location = URI.create(String.format("/datev/v1/privateEncounter/%s", encounter.getId()));
 		return ResponseEntity.created(location).build();
+	}
+
+	@Override
+	public ResponseEntity<Void> deleteEncounterForUser(UUID id, UUID userId) {
+		privateEncounterService.deleteEncounterByID(id, userId);
+		return ResponseEntity.noContent().build();
 	}
 
 }

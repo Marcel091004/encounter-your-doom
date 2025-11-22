@@ -3,6 +3,7 @@ package org.cool.encounteryourdoom.service;
 import org.cool.encounteryourdoom.mapper.PrivateEncounterMapper;
 import org.cool.encounteryourdoom.model.EncounterEntity;
 import org.cool.encounteryourdoom.model.PrivateEncounterEntity;
+import org.cool.encounteryourdoom.repository.EncounterRepository;
 import org.cool.encounteryourdoom.repository.PrivateEncounterRepository;
 import org.cool.encounteryourdoom.repository.filter.PrivateEncounterParameterFilter;
 import org.openapitools.model.Encounter;
@@ -16,11 +17,13 @@ import java.util.UUID;
 public class PrivateEncounterService {
 
 	private final PrivateEncounterRepository privateEncounterRepository;
+	private final EncounterRepository encounterRepository;
 	private final PrivateEncounterMapper privateEncounterMapper;
 	private final ActiveEncounterService activeEncounterService;
 
-	public PrivateEncounterService(PrivateEncounterRepository privateEncounterRepository, PrivateEncounterMapper privateEncounterMapper, ActiveEncounterService activeEncounterService) {
+	public PrivateEncounterService(PrivateEncounterRepository privateEncounterRepository, PrivateEncounterMapper privateEncounterMapper, ActiveEncounterService activeEncounterService, EncounterRepository encounterRepository) {
 		this.privateEncounterRepository = privateEncounterRepository;
+		this.encounterRepository = encounterRepository;
 		this.privateEncounterMapper = privateEncounterMapper;
 		this.activeEncounterService = activeEncounterService;
 	}
@@ -30,13 +33,28 @@ public class PrivateEncounterService {
 		return privateEncounterMapper.toEncounterEntity(privateEncounters);
 	}
 
-    //TODO why do we need the userId again... the encounter already has a Unique ID so there is like 0 Chance you can get the wrong one
     public EncounterEntity getEncounterByID(UUID userId, UUID encounterId) {
-        PrivateEncounterEntity privateEncounters = this.privateEncounterRepository.findById(encounterId).get();
-        return privateEncounterMapper.toEncounterEntity(privateEncounters);
+
+		PrivateEncounterEntity privateEncounterEntity;
+		List<PrivateEncounterEntity> privateEncounters;
+        PrivateEncounterParameterFilter filter = new PrivateEncounterParameterFilter();
+        filter.setUserId(userId);
+
+		try {
+
+         privateEncounters = this.privateEncounterRepository.findEncountersByFilters(filter);
+         privateEncounterEntity = privateEncounters.stream()
+                 .filter(encounter -> encounter.getId().equals(encounterId))
+                 .findFirst()
+                 .orElseThrow(() -> new IllegalArgumentException("Encounter not found for the given user."));
+
+		} catch (Exception e) {
+            privateEncounterEntity = privateEncounterMapper.toPrivatEncounterEntity(this.encounterRepository.findById(encounterId).get());
+		}
+        return privateEncounterMapper.toEncounterEntity(privateEncounterEntity);
     }
 
-    public void updateEncounterByID(UUID userId, UUID encounterId, Encounter updatedEncounter) {
+    public void updateEncounterByID(UUID encounterId, UUID userId, Encounter updatedEncounter) {
        this.privateEncounterRepository.findById(encounterId);
 
        PrivateEncounterEntity privateEncounterEntity = privateEncounterMapper.toPrivatEncounterEntity(updatedEncounter);
@@ -56,5 +74,15 @@ public class PrivateEncounterService {
 		privateEncounterEntity.setUserId(userId);
 
 		privateEncounterRepository.save(privateEncounterEntity);
+	}
+
+	public void deleteEncounterByID(UUID encounterId, UUID userId) {
+		Optional<PrivateEncounterEntity> privateEncounterEntity = privateEncounterRepository.findById(encounterId);
+
+		if (privateEncounterEntity.isPresent() && privateEncounterEntity.get().getUserId().equals(userId)) {
+			privateEncounterRepository.deleteByUserIdAndId(userId, encounterId);
+		} else {
+			throw new IllegalArgumentException("Encounter not found or does not belong to the user.");
+		}
 	}
 }
