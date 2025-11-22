@@ -2,19 +2,12 @@
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy Maven files first to leverage caching
+# Copy everything (pom + source code)
 COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
-
-# Download dependencies only (caches unless pom.xml changes)
-RUN ./mvnw dependency:go-offline -B
-
-# Copy the rest of the source code
 COPY src ./src
 
 # Build the app (skip tests to speed up)
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # ---- Stage 2: Run ----
 FROM eclipse-temurin:21-jdk AS runtime
